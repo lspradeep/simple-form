@@ -1,18 +1,11 @@
 package com.pradeep.form.simple_form.form_items
 
-import android.text.Editable
-import android.text.InputFilter
 import android.text.InputType
-import android.text.TextWatcher
 import androidx.core.widget.doAfterTextChanged
 import com.pradeep.form.simple_form.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemNumberInputBinding
-import com.pradeep.form.simple_form.databinding.ItemSingleLineTextBinding
 import com.pradeep.form.simple_form.model.Form
-import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
-import timber.log.Timber
 import java.lang.Exception
-import java.text.DecimalFormat
 
 class NumberInputFormItem(
     private val binding: ItemNumberInputBinding,
@@ -21,19 +14,16 @@ class NumberInputFormItem(
     BaseFormItem(binding.root, adapter) {
 
     override fun bind(form: Form) {
-        binding.editAnswer.text = null
-        binding.inputAnswer.error = null
-
         when (form.numberType) {
-            NumberType.PHONE_NUMBER -> {
-                binding.editAnswer.inputType = InputType.TYPE_CLASS_PHONE
+            NumberType.NUMBER -> {
+                binding.editAnswer.inputType = InputType.TYPE_CLASS_NUMBER
             }
             NumberType.DECIMAL_NUMBER -> {
                 binding.editAnswer.inputType =
                     InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             }
-            else -> {
-                binding.editAnswer.inputType = InputType.TYPE_CLASS_NUMBER
+            NumberType.PHONE_NUMBER -> {
+                binding.editAnswer.inputType = InputType.TYPE_CLASS_PHONE
             }
         }
 
@@ -43,45 +33,72 @@ class NumberInputFormItem(
 
         form.answer?.let { answer ->
             try {
-                if (answer.isNotBlank() && form.numberType == NumberType.PHONE_NUMBER) {
-                    binding.editAnswer.setText(answer)
+                if (answer.isNotBlank() && form.numberType == NumberType.NUMBER) {
+                    if (answer.toIntOrNull() is Int && answer.toInt() < Int.MAX_VALUE) {
+                        binding.editAnswer.setText(answer.toInt().toString())
+                    } else if (answer.toLongOrNull() is Long && answer.toLong() < Long.MAX_VALUE) {
+                        binding.editAnswer.setText(answer.toLong().toString())
+                    } else {
+                        binding.editAnswer.text = null
+                        binding.inputAnswer.error = null
+                    }
                 } else if (answer.isNotBlank() && form.numberType == NumberType.DECIMAL_NUMBER && answer.toDoubleOrNull() != null &&
                     answer.toDouble() < Double.MAX_VALUE
                 ) {
                     binding.editAnswer.setText(answer.toDouble().toString())
-                } else if (answer.isNotBlank() && answer.toLongOrNull() != null && answer.toLong() < Int.MAX_VALUE) {
-                    binding.editAnswer.setText(answer.toLong().toString())
+                } else if (answer.isNotBlank() && form.numberType == NumberType.PHONE_NUMBER) {
+                    binding.editAnswer.setText(answer)
+                } else {
+                    binding.editAnswer.text = null
+                    binding.inputAnswer.error = null
                 }
             } catch (e: Exception) {
+                binding.editAnswer.text = null
+                binding.inputAnswer.error = null
             }
+        } ?: run {
+            binding.editAnswer.text = null
+            binding.inputAnswer.error = null
         }
 
         binding.editAnswer.doAfterTextChanged {
-            val input = binding.editAnswer.text.toString()
-            var ans: String? = null
-            try {
-                if (input.isNotBlank()) {
-                    if (form.numberType == NumberType.PHONE_NUMBER) {
-                        ans = input
-                    } else if (form.numberType == NumberType.DECIMAL_NUMBER && input
-                            .toDoubleOrNull() != null && input
-                            .toDouble() < Double.MAX_VALUE
-                    ) {
-                        ans = input.toDouble().toString()
-                    } else if (form.numberType == NumberType.NUMBER && input
-                            .toLongOrNull() != null && input.toLong() < Int.MAX_VALUE
-                    ) {
-                        ans = input.toLong().toString()
-                    }
-                } else {
-                    ans = null
-                }
-            } catch (e: Exception) {
-
-            }
-
             adapter.getData()[adapterPosition].apply {
-                answer = ans
+                val input = it.toString()
+                var output: String? = null
+                try {
+                    if (input.isNotBlank()) {
+                        output = if (form.numberType == NumberType.NUMBER
+                        ) {
+                            if (input.toIntOrNull() is Int && input.toInt() < Int.MAX_VALUE) {
+                                input.toInt().toString()
+                            } else if (input.toLongOrNull() is Long && input.toLong() < Long.MAX_VALUE) {
+                                input.toLong().toString()
+                            } else {
+                                null
+                            }
+                        } else if (form.numberType == NumberType.DECIMAL_NUMBER && input
+                                .toDoubleOrNull() != null && input
+                                .toDouble() < Double.MAX_VALUE
+                        ) {
+                            input.toDouble().toString()
+                        } else if (form.numberType == NumberType.PHONE_NUMBER) {
+                            input
+                        } else {
+                            null
+                        }
+                    } else {
+                        output = null
+                    }
+                } catch (e: Exception) {
+                    output = null
+                }
+
+                if (form.isMandatory && output.isNullOrBlank()) {
+                    binding.inputAnswer.error = form.errorMessage
+                } else {
+                    binding.inputAnswer.error = null
+                }
+                answer = output
             }
         }
 
@@ -94,6 +111,8 @@ class NumberInputFormItem(
                     binding.inputAnswer.error = null
                 }
             }
+        } else {
+            binding.inputAnswer.error = null
         }
     }
 

@@ -67,7 +67,6 @@ class SingleLineTextFormItem(
                 } else if (singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
                     if (isMandatory && (input.isNullOrBlank() || !input.toString().isEmailValid())
                     ) {
-                        answer = null
                         binding.inputAnswer.error = "Please provide a valid email address"
                     } else if (!input.isNullOrBlank() && !input.toString().isEmailValid()) {
                         answer = input.toString()
@@ -102,6 +101,8 @@ class SingleLineTextFormItem(
                     }
                 }
             }
+        }else{
+            binding.inputAnswer.error = null
         }
     }
 

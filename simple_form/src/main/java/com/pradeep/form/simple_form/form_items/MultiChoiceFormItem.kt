@@ -25,7 +25,7 @@ class MultiChoiceFormItem(
 
         val choices = mutableListOf<String>()
         choices.clear()
-        choices.addAll(form.choices?.distinct().orEmpty())
+        choices.addAll(form.choices?.filter { it.isNotBlank() }?.distinct().orEmpty())
 
         var dialog: AlertDialog? = null
 
@@ -37,6 +37,9 @@ class MultiChoiceFormItem(
 
         if (selectedAnswers.isNotEmpty()) {
             binding.editAnswer.setText(SimpleFormUtils.convertListToSingleString(selectedAnswers))
+        } else {
+            binding.editAnswer.text = null
+            binding.inputAnswer.error = null
         }
 
         val checkedItems = BooleanArray(choices.size)
@@ -72,6 +75,11 @@ class MultiChoiceFormItem(
                                 selectedAnswers
                             )
                         )
+                        if (form.isMandatory && selectedAnswers.isNullOrEmpty()) {
+                            binding.inputAnswer.error = form.errorMessage
+                        } else {
+                            binding.inputAnswer.error = null
+                        }
                     }
                     .setPositiveButton("Done") { _: DialogInterface, _: Int ->
                     }.create()
@@ -109,6 +117,8 @@ class MultiChoiceFormItem(
                     binding.inputAnswer.error = null
                 }
             }
+        } else {
+            binding.inputAnswer.error = null
         }
     }
 

@@ -60,12 +60,11 @@ class SimpleFormView @JvmOverloads constructor(
         var isValid = true
         for (index in allFormsItems?.indices ?: 0..0) {
             val element = allFormsItems?.get(index)
-            Timber.d("checking ${element?.formType} - ${element?.question} at index $index")
             if (element?.isFormItemValid() == false) {
-                element.isValid = false
                 linearLayoutManager.scrollToPositionWithOffset(index, 0)
                 simpleFormAdapter?.notifyItemChanged(index)
                 isValid = false
+                Timber.d("check ${element.formType} - ${element.question} at index $index")
                 break
             }
         }

@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         val forms = mutableListOf<Form>()
         forms.add(
             Form(
-                isMandatory = true,
                 formType = FormTypes.SINGLE_LINE_TEXT,
                 question = "Single Line Text",
                 hint = "hint 1",
@@ -66,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         )
         forms.add(
             Form(
-                isMandatory = true,
                 formType = FormTypes.SINGLE_LINE_TEXT,
                 question = "Provide Email address",
                 description = "description 1",
@@ -76,16 +74,16 @@ class MainActivity : AppCompatActivity() {
         )
         forms.add(
             Form(
-                isMandatory = true,
                 formType = FormTypes.MULTI_LINE_TEXT,
                 question = "Multi Line Text",
                 description = "description 2",
-                hint = "hint 2"
+                hint = "hint 2",
+                charLimit = 50,
+                showCharLimitCounter = true
             )
         )
         forms.add(
             Form(
-                isMandatory = true,
                 formType = FormTypes.SINGLE_CHOICE,
                 question = "Single choice",
                 description = "description 3",
@@ -102,7 +100,6 @@ class MainActivity : AppCompatActivity() {
         )
         forms.add(
             Form(
-                isMandatory = true,
                 formType = FormTypes.MULTI_CHOICE,
                 question = "Multi choice",
                 description = "description 3",
@@ -116,7 +113,6 @@ class MainActivity : AppCompatActivity() {
                     "3",
                     "one"
                 ),
-                answers = listOf("3")
             )
         )
         forms.add(
@@ -126,6 +122,7 @@ class MainActivity : AppCompatActivity() {
                 question = "Number",
                 description = "description 3",
                 hint = "hint 3",
+                numberType = NumberType.NUMBER
             )
         )
         forms.add(

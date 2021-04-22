@@ -19,7 +19,7 @@ class SingleChoiceFormItem(
     override fun bind(form: Form) {
         val choices = mutableListOf<String>()
         choices.clear()
-        choices.addAll(form.choices?.distinct().orEmpty())
+        choices.addAll(form.choices?.filter { it.isNotBlank() }?.distinct().orEmpty())
 
         var materialDialog: AlertDialog? = null
 
@@ -32,7 +32,13 @@ class SingleChoiceFormItem(
         form.answer?.let { answer ->
             if (answer.isNotEmpty()) {
                 binding.editAnswer.setText(answer)
+            } else {
+                binding.editAnswer.text = null
+                binding.inputAnswer.error = null
             }
+        } ?: run {
+            binding.editAnswer.text = null
+            binding.inputAnswer.error = null
         }
 
         binding.editAnswer.setOnClickListener {
@@ -43,6 +49,7 @@ class SingleChoiceFormItem(
                         adapter.getData()[adapterPosition].apply {
                             answer = choices[which]
                             binding.editAnswer.setText(answer)
+                            binding.inputAnswer.error = null
                         }
                     }.create()
             }
@@ -79,6 +86,8 @@ class SingleChoiceFormItem(
                     binding.inputAnswer.error = null
                 }
             }
+        }else{
+            binding.inputAnswer.error = null
         }
     }
 

@@ -21,8 +21,6 @@ data class Form(
     val numberType: NumberType = NumberType.NUMBER,
     val charLimit: Int = -1,
     val showCharLimitCounter: Boolean = false,
-    val digitsLimit: Int = 5,
-    val decimalPlaces: Int = 2,
     val errorMessage: String = "Please provide an answer",
     var formValidationListener: String? = null
 ) {
@@ -45,14 +43,17 @@ data class Form(
 
     fun isFormItemValid(): Boolean {
         if (formType == FormTypes.NONE) {
-            return true
+            isValid = true
+            return isValid
         }
         if (formType == FormTypes.SINGLE_LINE_TEXT && singleLineTextType == SingleLineTextType.TEXT) {
-            return !(isMandatory && answer.isNullOrBlank())
+            isValid = !(isMandatory && answer.isNullOrBlank())
+            return isValid
         }
 
         if (formType == FormTypes.SINGLE_LINE_TEXT && singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
-            isValid = !(isMandatory && (answer.isNullOrBlank() || !answer.toString().isEmailValid()))
+            isValid =
+                !(isMandatory && (answer.isNullOrBlank() || !answer.toString().isEmailValid()))
             return isValid
         }
 
@@ -71,7 +72,17 @@ data class Form(
             return isValid
         }
 
-        if (formType == FormTypes.NUMBER) {
+        if (formType == FormTypes.NUMBER && numberType == NumberType.NUMBER) {
+            isValid = !(isMandatory && answer.isNullOrBlank())
+            return isValid
+        }
+
+        if (formType == FormTypes.NUMBER && numberType == NumberType.DECIMAL_NUMBER) {
+            isValid = !(isMandatory && answer.isNullOrBlank())
+            return isValid
+        }
+
+        if (formType == FormTypes.NUMBER && numberType == NumberType.PHONE_NUMBER) {
             isValid = !(isMandatory && answer.isNullOrBlank())
             return isValid
         }

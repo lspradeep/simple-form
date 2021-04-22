@@ -1,5 +1,6 @@
 package com.pradeep.form.simple_form.form_items
 
+import android.text.InputFilter
 import android.text.InputType
 import androidx.core.widget.doAfterTextChanged
 import com.pradeep.form.simple_form.SimpleFormAdapter
@@ -15,6 +16,16 @@ class MultiLineTextFormItem(
 
     override fun bind(form: Form) {
         binding.editAnswer.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
+
+        if (form.charLimit != -1 && form.charLimit > 0) {
+            binding.editAnswer.filters = arrayOf(InputFilter.LengthFilter(form.charLimit))
+            if (form.showCharLimitCounter) {
+                binding.inputAnswer.counterMaxLength = form.charLimit
+                binding.inputAnswer.isCounterEnabled = true
+            } else {
+                binding.inputAnswer.isCounterEnabled = false
+            }
+        }
 
         form.hint?.let {
             binding.inputAnswer.hint = it.toString()
@@ -41,17 +52,19 @@ class MultiLineTextFormItem(
                     binding.inputAnswer.error = null
                 }
             }
+        }
 
-            if (!form.isValid) {
-                binding.editAnswer.requestFocus()
-                form.apply {
-                    if (isMandatory && answer.isNullOrBlank()) {
-                        binding.inputAnswer.error = errorMessage
-                    } else {
-                        binding.inputAnswer.error = null
-                    }
+        if (!form.isValid) {
+            binding.editAnswer.requestFocus()
+            form.apply {
+                if (isMandatory && answer.isNullOrBlank()) {
+                    binding.inputAnswer.error = errorMessage
+                } else {
+                    binding.inputAnswer.error = null
                 }
             }
+        }else{
+            binding.inputAnswer.error = null
         }
     }
 
