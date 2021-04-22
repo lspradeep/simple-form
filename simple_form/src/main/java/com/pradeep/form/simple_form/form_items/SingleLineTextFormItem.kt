@@ -65,10 +65,16 @@ class SingleLineTextFormItem(
                     }
 
                 } else if (singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
-                    if (isMandatory && (input.isNullOrBlank() || !input.toString().isEmailValid())
-                    ) {
+                    if (isMandatory && input.isNullOrBlank()) {
                         binding.inputAnswer.error = "Please provide a valid email address"
-                    } else if (!input.isNullOrBlank() && !input.toString().isEmailValid()) {
+                    } else if (isMandatory && !input.isNullOrBlank() && !input.toString()
+                            .isEmailValid()
+                    ) {
+                        answer = input.toString()
+                        binding.inputAnswer.error = "Please provide a valid email address"
+                    } else if (!input.isNullOrBlank() && !input.toString()
+                            .isEmailValid()
+                    ) {
                         answer = input.toString()
                         binding.inputAnswer.error = "Please provide a valid email address"
                     } else {
@@ -90,8 +96,10 @@ class SingleLineTextFormItem(
                         binding.inputAnswer.error = null
                     }
                 } else if (singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
-                    if (isMandatory && (answer.isNullOrBlank() || !answer.toString()
-                            .isEmailValid())
+                    if (isMandatory && answer.isNullOrBlank()) {
+                        binding.inputAnswer.error = "Please provide a valid email address"
+                    } else if (isMandatory && !answer.isNullOrBlank() && !answer.toString()
+                            .isEmailValid()
                     ) {
                         binding.inputAnswer.error = "Please provide a valid email address"
                     } else if (!answer.isNullOrBlank() && !answer.toString().isEmailValid()) {
@@ -101,7 +109,7 @@ class SingleLineTextFormItem(
                     }
                 }
             }
-        }else{
+        } else {
             binding.inputAnswer.error = null
         }
     }

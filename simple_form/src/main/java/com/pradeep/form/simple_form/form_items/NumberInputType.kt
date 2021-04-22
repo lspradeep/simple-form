@@ -1,5 +1,5 @@
 package com.pradeep.form.simple_form.form_items
 
-enum class NumberType {
+enum class NumberInputType {
     NUMBER, DECIMAL_NUMBER, PHONE_NUMBER
 }

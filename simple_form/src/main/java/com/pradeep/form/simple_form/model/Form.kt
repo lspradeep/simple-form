@@ -1,7 +1,7 @@
 package com.pradeep.form.simple_form.model
 
 import com.pradeep.form.simple_form.form_items.FormTypes
-import com.pradeep.form.simple_form.form_items.NumberType
+import com.pradeep.form.simple_form.form_items.NumberInputType
 import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
 import java.lang.Exception
@@ -18,7 +18,7 @@ data class Form(
     val isMandatory: Boolean = false,
     val sectionTitle: String? = null,
     val singleLineTextType: SingleLineTextType = SingleLineTextType.TEXT,
-    val numberType: NumberType = NumberType.NUMBER,
+    val numberInputType: NumberInputType = NumberInputType.NUMBER,
     val charLimit: Int = -1,
     val showCharLimitCounter: Boolean = false,
     val errorMessage: String = "Please provide an answer",
@@ -52,8 +52,15 @@ data class Form(
         }
 
         if (formType == FormTypes.SINGLE_LINE_TEXT && singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
-            isValid =
-                !(isMandatory && (answer.isNullOrBlank() || !answer.toString().isEmailValid()))
+
+            isValid = if (isMandatory && answer.isNullOrBlank()) {
+                false
+            } else if (isMandatory && !answer.isNullOrBlank() && !answer.toString()
+                    .isEmailValid()
+            ) {
+                false
+            } else !(!answer.isNullOrBlank() && !answer.toString().isEmailValid())
+
             return isValid
         }
 
@@ -72,21 +79,21 @@ data class Form(
             return isValid
         }
 
-        if (formType == FormTypes.NUMBER && numberType == NumberType.NUMBER) {
+        if (formType == FormTypes.NUMBER && numberInputType == NumberInputType.NUMBER) {
             isValid = !(isMandatory && answer.isNullOrBlank())
             return isValid
         }
 
-        if (formType == FormTypes.NUMBER && numberType == NumberType.DECIMAL_NUMBER) {
+        if (formType == FormTypes.NUMBER && numberInputType == NumberInputType.DECIMAL_NUMBER) {
             isValid = !(isMandatory && answer.isNullOrBlank())
             return isValid
         }
 
-        if (formType == FormTypes.NUMBER && numberType == NumberType.PHONE_NUMBER) {
+        if (formType == FormTypes.NUMBER && numberInputType == NumberInputType.PHONE_NUMBER) {
             isValid = !(isMandatory && answer.isNullOrBlank())
             return isValid
         }
 
-        return true
+        return false
     }
 }

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.pradeep.form.simple_form.form_items.FormTypes
-import com.pradeep.form.simple_form.form_items.NumberType
+import com.pradeep.form.simple_form.form_items.NumberInputType
 import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.model.Form
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
                 question = "Number",
                 description = "description 3",
                 hint = "hint 3",
-                numberType = NumberType.NUMBER
+                numberInputType = NumberInputType.NUMBER
             )
         )
         forms.add(
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                 question = "Decimal number",
                 description = "description 3",
                 hint = "hint 3",
-                numberType = NumberType.DECIMAL_NUMBER
+                numberInputType = NumberInputType.DECIMAL_NUMBER
             )
         )
         forms.add(
@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                 question = "Phone number",
                 description = "description 3",
                 hint = "hint 3",
-                numberType = NumberType.PHONE_NUMBER
+                numberInputType = NumberInputType.PHONE_NUMBER
             )
         )
         return forms
