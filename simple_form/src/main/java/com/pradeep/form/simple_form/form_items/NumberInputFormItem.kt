@@ -2,9 +2,13 @@ package com.pradeep.form.simple_form.form_items
 
 import android.text.InputType
 import androidx.core.widget.doAfterTextChanged
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 import com.pradeep.form.simple_form.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemNumberInputBinding
 import com.pradeep.form.simple_form.model.Form
+import com.pradeep.form.simple_form.utils.SimpleFormUtils
+
 
 class NumberInputFormItem(
     private val binding: ItemNumberInputBinding,
@@ -43,29 +47,10 @@ class NumberInputFormItem(
             binding.inputAnswer.error = null
         }
 
-        binding.editAnswer.doAfterTextChanged { s ->
+        binding.editAnswer.doAfterTextChanged { input ->
             adapter.getData()[adapterPosition].apply {
-                val input = s.toString()
-                when (form.numberInputType) {
-                    NumberInputType.NUMBER -> {
-                        answer = if (input.toLongOrNull() != null && input.toLong() < Long.MAX_VALUE) {
-                                input.toLong().toString()
-                            } else {
-                                null
-                            }
-                    }
-                    NumberInputType.DECIMAL_NUMBER -> {
-                        answer = if (input.toDoubleOrNull() != null && input.toDouble() < Double.MAX_VALUE) {
-                                input.toDouble().toString()
-                            } else {
-                                null
-                            }
-                    }
-                    NumberInputType.PHONE_NUMBER -> {
-                        answer = input
-                    }
-                }
-                answer = input
+                answer = input.toString()
+
                 if (form.isMandatory && answer.isNullOrBlank()) {
                     binding.inputAnswer.error = form.errorMessage
                 } else {
@@ -77,10 +62,30 @@ class NumberInputFormItem(
         if (!form.isValid) {
             binding.editAnswer.requestFocus()
             form.apply {
-                if (isMandatory && answer.isNullOrBlank()) {
-                    binding.inputAnswer.error = errorMessage
+                if (numberInputType == NumberInputType.PHONE_NUMBER) {
+                    if (isMandatory && answer.isNullOrBlank()) {
+                        binding.inputAnswer.error = errorMessage
+                    } else if (isMandatory && !answer.isNullOrBlank() && !SimpleFormUtils.isValidPhoneNumber(
+                            countryCode,
+                            answer
+                        )
+                    ) {
+                        binding.inputAnswer.error = errorMessage
+                    } else if (!answer.isNullOrBlank() && !SimpleFormUtils.isValidPhoneNumber(
+                            countryCode,
+                            answer
+                        )
+                    ) {
+                        binding.inputAnswer.error = errorMessage
+                    } else {
+                        binding.inputAnswer.error = null
+                    }
                 } else {
-                    binding.inputAnswer.error = null
+                    if (isMandatory && answer.isNullOrBlank()) {
+                        binding.inputAnswer.error = errorMessage
+                    } else {
+                        binding.inputAnswer.error = null
+                    }
                 }
             }
         } else {

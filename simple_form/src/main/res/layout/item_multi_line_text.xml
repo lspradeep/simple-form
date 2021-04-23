@@ -24,12 +24,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_answer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:lines="8"
                 android:maxLines="10"
-                android:minHeight="100dp"
-                android:minLines="3" />
+                android:minLines="4" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

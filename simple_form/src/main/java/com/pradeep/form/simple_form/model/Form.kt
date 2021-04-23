@@ -3,6 +3,7 @@ package com.pradeep.form.simple_form.model
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.form_items.NumberInputType
 import com.pradeep.form.simple_form.form_items.SingleLineTextType
+import com.pradeep.form.simple_form.utils.SimpleFormUtils
 import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
 import java.lang.Exception
 import java.util.*
@@ -19,6 +20,7 @@ data class Form(
     val sectionTitle: String? = null,
     val singleLineTextType: SingleLineTextType = SingleLineTextType.TEXT,
     val numberInputType: NumberInputType = NumberInputType.NUMBER,
+    var countryCode: String = "+91",
     val charLimit: Int = -1,
     val showCharLimitCounter: Boolean = false,
     val errorMessage: String = "Please provide an answer",
@@ -37,7 +39,7 @@ data class Form(
             throw Exception("'charLimit': use -1 for no limit or use value greater than 0")
         }
         if (formType == FormTypes.NONE && sectionTitle.isNullOrBlank()) {
-            throw Exception("please provide a 'sectionTitle'")
+            throw Exception("'FormTypes.NONE' is used internally for creating section titles, when you set 'Map<String, List<Form>>' to 'SimpleFormView'")
         }
     }
 
@@ -90,7 +92,17 @@ data class Form(
         }
 
         if (formType == FormTypes.NUMBER && numberInputType == NumberInputType.PHONE_NUMBER) {
-            isValid = !(isMandatory && answer.isNullOrBlank())
+            isValid = if (isMandatory && answer.isNullOrBlank()) {
+                false
+            } else if (isMandatory && !answer.isNullOrBlank() && !SimpleFormUtils.isValidPhoneNumber(
+                    countryCode,
+                    answer)
+            ) {
+                false
+            } else !(!answer.isNullOrBlank() && !SimpleFormUtils.isValidPhoneNumber(
+                countryCode,
+                answer
+            ))
             return isValid
         }
 

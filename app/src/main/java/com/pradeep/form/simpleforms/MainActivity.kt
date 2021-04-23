@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 question = "Multi Line Text",
                 description = "description 2",
                 hint = "hint 2",
-                charLimit = 50,
+                charLimit = 150,
                 showCharLimitCounter = true
             )
         )
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                 question = "Decimal number",
                 description = "description 3",
                 hint = "hint 3",
-                numberInputType = NumberInputType.DECIMAL_NUMBER
+                numberInputType = NumberInputType.DECIMAL_NUMBER,
             )
         )
         forms.add(

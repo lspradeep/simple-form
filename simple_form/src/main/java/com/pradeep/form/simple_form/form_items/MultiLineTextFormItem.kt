@@ -15,7 +15,6 @@ class MultiLineTextFormItem(
     BaseFormItem(binding.root, adapter) {
 
     override fun bind(form: Form) {
-        binding.editAnswer.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
 
         if (form.charLimit != -1 && form.charLimit > 0) {
             binding.editAnswer.filters = arrayOf(InputFilter.LengthFilter(form.charLimit))
