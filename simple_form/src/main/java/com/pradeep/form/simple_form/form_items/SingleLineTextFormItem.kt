@@ -1,16 +1,12 @@
 package com.pradeep.form.simple_form.form_items
 
-import android.text.Editable
 import android.text.InputFilter
 import android.text.InputType
-import android.text.TextWatcher
 import androidx.core.widget.doAfterTextChanged
-import com.pradeep.form.simple_form.R
 import com.pradeep.form.simple_form.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemSingleLineTextBinding
 import com.pradeep.form.simple_form.model.Form
 import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
-import timber.log.Timber
 
 class SingleLineTextFormItem(
     private val binding: ItemSingleLineTextBinding,

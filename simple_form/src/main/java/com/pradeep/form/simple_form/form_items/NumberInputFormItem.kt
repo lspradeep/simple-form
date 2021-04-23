@@ -2,8 +2,6 @@ package com.pradeep.form.simple_form.form_items
 
 import android.text.InputType
 import androidx.core.widget.doAfterTextChanged
-import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber
 import com.pradeep.form.simple_form.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemNumberInputBinding
 import com.pradeep.form.simple_form.model.Form

@@ -6,11 +6,11 @@ import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pradeep.form.simple_form.R
 import com.pradeep.form.simple_form.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ViewSimpleFormBinding
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
-import kotlinx.coroutines.*
 import timber.log.Timber
 
 class SimpleFormView @JvmOverloads constructor(
@@ -19,8 +19,25 @@ class SimpleFormView @JvmOverloads constructor(
 ) :
     RelativeLayout(context, attrs) {
 
+    private var showOneSectionAtATime: Boolean
     var simpleFormAdapter: SimpleFormAdapter? = null
     private val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.SimpleFormView,
+            0, 0
+        ).apply {
+
+            try {
+                showOneSectionAtATime =
+                    getBoolean(R.styleable.SimpleFormView_showOneSectionAtATime, false)
+            } finally {
+                recycle()
+            }
+        }
+    }
 
 
     private val binding: ViewSimpleFormBinding = ViewSimpleFormBinding.inflate(
@@ -30,24 +47,48 @@ class SimpleFormView @JvmOverloads constructor(
     )
 
     fun setData(forms: List<Form>) {
-        simpleFormAdapter = SimpleFormAdapter(forms = forms, sectionedForms = null)
+        simpleFormAdapter = SimpleFormAdapter(
+            forms = forms,
+            sectionedForms = null,
+            showOneSectionAtATime = false,
+            simpleFormView = binding
+        )
         binding.recyclerForms.apply {
             layoutManager = linearLayoutManager
             adapter = simpleFormAdapter
         }
+        setListeners()
     }
 
     fun setData(forms: Map<String, List<Form>>) {
-        simpleFormAdapter = SimpleFormAdapter(sectionedForms = forms, forms = null)
+        simpleFormAdapter = SimpleFormAdapter(
+            sectionedForms = forms,
+            forms = null,
+            showOneSectionAtATime = showOneSectionAtATime,
+            simpleFormView = binding
+        )
         binding.recyclerForms.apply {
             layoutManager = linearLayoutManager
             adapter = simpleFormAdapter
+            itemAnimator = null
+        }
+        setListeners()
+    }
+
+    private fun setListeners() {
+        binding.btnNext.setOnClickListener {
+            simpleFormAdapter?.showNextSection()
+            linearLayoutManager.scrollToPositionWithOffset(0, 0)
+        }
+        binding.btnPrevious.setOnClickListener {
+            simpleFormAdapter?.showPreviousSection()
+            linearLayoutManager.scrollToPositionWithOffset(0, 0)
         }
     }
 
     //Only for library users
     fun getFormItems(): List<Form> {
-        return simpleFormAdapter?.getData()?.filter { it.formType != FormTypes.NONE } ?: listOf()
+        return simpleFormAdapter?.getAllData()?.filter { it.formType != FormTypes.NONE } ?: listOf()
     }
 
     //Only for library users
@@ -56,7 +97,7 @@ class SimpleFormView @JvmOverloads constructor(
     }
 
     fun validateInputs(): Boolean {
-        val allFormsItems = simpleFormAdapter?.getData()
+        val allFormsItems = simpleFormAdapter?.getAllData()
         var isValid = true
         for (index in allFormsItems?.indices ?: 0..0) {
             val element = allFormsItems?.get(index)

@@ -17,7 +17,7 @@ data class Form(
     var answer: String? = null,
     var answers: List<String>? = null,
     val isMandatory: Boolean = false,
-    val sectionTitle: String? = null,
+    var sectionTitle: String? = null,
     val singleLineTextType: SingleLineTextType = SingleLineTextType.TEXT,
     val numberInputType: NumberInputType = NumberInputType.NUMBER,
     var countryCode: String = "+91",
@@ -96,7 +96,8 @@ data class Form(
                 false
             } else if (isMandatory && !answer.isNullOrBlank() && !SimpleFormUtils.isValidPhoneNumber(
                     countryCode,
-                    answer)
+                    answer
+                )
             ) {
                 false
             } else !(!answer.isNullOrBlank() && !SimpleFormUtils.isValidPhoneNumber(
