@@ -1,13 +1,15 @@
 package com.pradeep.form.simple_form.model
 
+import android.os.Parcelable
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.form_items.NumberInputType
 import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
 import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
+import kotlinx.android.parcel.Parcelize
 import java.lang.Exception
 import java.util.*
-
+@Parcelize
 data class Form(
     val formType: Int = FormTypes.NONE,
     val question: String? = null,
@@ -25,7 +27,7 @@ data class Form(
     val showCharLimitCounter: Boolean = false,
     val errorMessage: String = "Please provide an answer",
     var formValidationListener: String? = null
-) {
+):Parcelable {
     val id: String = UUID.randomUUID().toString()
     var isSectionTitle: Boolean = false
     var isValid = true

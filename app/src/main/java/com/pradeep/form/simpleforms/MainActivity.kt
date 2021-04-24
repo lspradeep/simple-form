@@ -8,49 +8,18 @@ import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.form_items.NumberInputType
 import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.model.Form
+import com.pradeep.form.simple_form.presentation.FormSubmitCallback
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
 import com.pradeep.form.simpleforms.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FormSubmitCallback {
     private lateinit var binding: ActivityMainBinding
-    private var sectionedForms = mutableMapOf<String, List<Form>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setSectionedForm()
 
-        binding.btnHide.setOnClickListener {
-            binding.textOutput.isVisible = false
-            binding.simpleForm.isVisible = true
-        }
-        binding.btnSubmit.setOnClickListener {
-            if (!binding.simpleForm.validateInputs()) {
-                return@setOnClickListener
-            }
-            binding.textOutput.text = ""
-            binding.textOutput.isVisible = true
-            binding.simpleForm.isVisible = false
-            val stringBuilder = StringBuilder()
-            binding.simpleForm.getFormItems().forEach {
-                stringBuilder.append(
-                    "${it.question} - ${it.answer} - ${
-                        SimpleFormUtils.convertListToSingleString(
-                            it.answers ?: listOf()
-                        )
-                    }"
-                )
-                stringBuilder.append("\n")
-            }
-            binding.textOutput.text = stringBuilder.toString()
-        }
-    }
-
-    private fun setSectionedForm() {
-        sectionedForms.put("One", getForms())
-        sectionedForms.put("Two", getForms())
-        binding.simpleForm.setData(sectionedForms)
-//        binding.simpleForm.setData(getForms())
+        binding.simpleForm.setData(getForms(),this)
     }
 
     private fun getForms(): List<Form> {
@@ -58,70 +27,61 @@ class MainActivity : AppCompatActivity() {
         forms.add(
             Form(
                 formType = FormTypes.SINGLE_LINE_TEXT,
-                question = "Single Line Text",
-                hint = "hint 1",
-                charLimit = 4,
+                question = "Name",
+                hint = "please enter your name",
+                isMandatory = true,
+                singleLineTextType = SingleLineTextType.TEXT,
             )
         )
         forms.add(
             Form(
                 formType = FormTypes.SINGLE_LINE_TEXT,
-                question = "Provide Email address",
-                description = "description 1",
-                hint = "hint 1",
-                singleLineTextType = SingleLineTextType.EMAIL_ADDRESS
+                question = "Email",
+                hint = "please enter your Email address",
+                singleLineTextType = SingleLineTextType.EMAIL_ADDRESS,
+                isMandatory = true
             )
         )
         forms.add(
             Form(
                 formType = FormTypes.MULTI_LINE_TEXT,
-                question = "Multi Line Text",
-                description = "description 2",
-                hint = "hint 2",
-                charLimit = 150,
-                showCharLimitCounter = true
+                question = "Bio",
+                description = "tell us about you",
+                hint = "I'm from India. I love ice cream.",
             )
         )
         forms.add(
             Form(
                 formType = FormTypes.SINGLE_CHOICE,
-                question = "Single choice",
-                description = "description 3",
-                hint = "hint 3",
+                question = "Gender",
+                hint = "please choose your gender",
                 choices = listOf(
-                    "one",
-                    "two",
-                    "3",
-                    "one",
-                    "two",
-                    "3"
-                )
+                    "Male",
+                    "Female",
+                    "Others"
+                ),
+                isMandatory = true
             )
         )
         forms.add(
             Form(
                 formType = FormTypes.MULTI_CHOICE,
-                question = "Multi choice",
-                description = "description 3",
+                question = "Your favourite TV shows",
+                description = "you can pick more than one",
                 hint = "hint 3",
                 choices = listOf(
-                    "one",
-                    "two",
-                    "3",
-                    "one",
-                    "two",
-                    "3",
-                    "one"
+                    "friends",
+                    "tom and jerry",
+                    "pokemon",
+                    "rick and morty"
                 ),
             )
         )
         forms.add(
             Form(
-                isMandatory = true,
                 formType = FormTypes.NUMBER,
-                question = "Number",
-                description = "description 3",
-                hint = "hint 3",
+                question = "Do you earn or still studying",
+                description = "if yes, care to tell us how much you earn per year?",
                 numberInputType = NumberInputType.NUMBER
             )
         )
@@ -129,9 +89,7 @@ class MainActivity : AppCompatActivity() {
             Form(
                 isMandatory = true,
                 formType = FormTypes.NUMBER,
-                question = "Decimal number",
-                description = "description 3",
-                hint = "hint 3",
+                question = "What's  your score in college",
                 numberInputType = NumberInputType.DECIMAL_NUMBER,
             )
         )
@@ -140,11 +98,14 @@ class MainActivity : AppCompatActivity() {
                 isMandatory = true,
                 formType = FormTypes.NUMBER,
                 question = "Phone number",
-                description = "description 3",
-                hint = "hint 3",
+                hint = "please provide your phone number",
                 numberInputType = NumberInputType.PHONE_NUMBER
             )
         )
         return forms
+    }
+
+    override fun onFormSubmitted(forms: List<Form>) {
+        startActivity(FormOutputDisplayActivity.newIntent(this, forms))
     }
 }

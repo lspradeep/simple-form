@@ -19,16 +19,15 @@ class SingleLineTextFormItem(
 
         if (form.singleLineTextType == SingleLineTextType.TEXT) {
             binding.editAnswer.inputType = InputType.TYPE_CLASS_TEXT
-            if (form.charLimit != -1 && form.charLimit > 0) {
+            if (form.showCharLimitCounter && form.charLimit != -1 && form.charLimit > 0) {
                 binding.editAnswer.filters = arrayOf(InputFilter.LengthFilter(form.charLimit))
-                if (form.showCharLimitCounter) {
-                    binding.inputAnswer.counterMaxLength = form.charLimit
-                    binding.inputAnswer.isCounterEnabled = true
-                } else {
-                    binding.inputAnswer.isCounterEnabled = false
-                }
+                binding.inputAnswer.counterMaxLength = form.charLimit
+                binding.inputAnswer.isCounterEnabled = true
+            } else {
+                binding.inputAnswer.isCounterEnabled = false
             }
         } else if (form.singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
+            binding.inputAnswer.isCounterEnabled = false
             binding.editAnswer.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         }
 
@@ -50,6 +49,7 @@ class SingleLineTextFormItem(
         }
 
         binding.editAnswer.doAfterTextChanged { input ->
+            binding.inputAnswer.isCounterEnabled = false
             adapter.getData()[adapterPosition].apply {
                 if (singleLineTextType == SingleLineTextType.TEXT) {
                     if (isMandatory && input.isNullOrBlank()) {

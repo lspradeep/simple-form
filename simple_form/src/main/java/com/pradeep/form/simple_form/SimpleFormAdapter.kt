@@ -13,7 +13,7 @@ class SimpleFormAdapter(
     forms: List<Form>? = null,
     val sectionedForms: Map<String, List<Form>>? = null,
     val showOneSectionAtATime: Boolean = false,
-    val simpleFormView: ViewSimpleFormBinding
+    val adapterCallback: AdapterCallback
 ) : RecyclerView.Adapter<BaseFormItem>() {
 
     private var dataSet = mutableListOf<Form>()
@@ -44,17 +44,20 @@ class SimpleFormAdapter(
                 }
             }
         }
-        simpleFormView.layoutSectionedFormButtons.isVisible = getIsSectionedAdapter()
         if (getIsSectionedAdapter()) {
+            sectionedDataSet.clear()
             currentSectionTitle = getSectionTitles()[0]
             currentSectionIndex = 0
-            dataSet.forEach { form ->
-                if (form.sectionTitle == currentSectionTitle) {
-                    sectionedDataSet.add(form)
-                }
-            }
-
+            sectionedDataSet.addAll(getCurrentSectionForm())
             updateVisibility()
+        }
+    }
+
+    private fun getCurrentSectionForm(): List<Form> {
+        return if (!sectionedFormOutputData[getSectionTitles()[currentSectionIndex]].isNullOrEmpty()) {
+            sectionedFormOutputData[getSectionTitles()[currentSectionIndex]].orEmpty()
+        } else {
+            dataSet.filter { it.sectionTitle == currentSectionTitle }
         }
     }
 
@@ -105,10 +108,6 @@ class SimpleFormAdapter(
         return if (getIsSectionedAdapter()) sectionedDataSet else dataSet
     }
 
-    fun getAllData(): List<Form> {
-        return dataSet
-    }
-
     fun showNextSection() {
         //store current section data
         sectionedFormOutputData[getSectionTitles()[currentSectionIndex]] = sectionedDataSet
@@ -117,16 +116,7 @@ class SimpleFormAdapter(
             currentSectionIndex++
             currentSectionTitle = getSectionTitles()[currentSectionIndex]
             sectionedDataSet.clear()
-            if (sectionedFormOutputData[getSectionTitles()[currentSectionIndex]].isNullOrEmpty()) {
-                dataSet.filter { it.sectionTitle == currentSectionTitle }.let {
-                    sectionedDataSet.addAll(it)
-                }
-            } else {
-                sectionedFormOutputData[getSectionTitles()[currentSectionIndex]]?.let {
-                    sectionedDataSet.addAll(it)
-                }
-            }
-
+            sectionedDataSet.addAll(getCurrentSectionForm())
             notifyDataSetChanged()
             updateVisibility()
         }
@@ -141,29 +131,21 @@ class SimpleFormAdapter(
             currentSectionIndex--
             currentSectionTitle = getSectionTitles()[currentSectionIndex]
             sectionedDataSet.clear()
-            if (sectionedFormOutputData[getSectionTitles()[currentSectionIndex]].isNullOrEmpty()) {
-                dataSet.filter { it.sectionTitle == currentSectionTitle }.let {
-                    sectionedDataSet.addAll(it)
-                }
-            } else {
-                sectionedFormOutputData[getSectionTitles()[currentSectionIndex]]?.let {
-                    sectionedDataSet.addAll(it)
-                }
-            }
+            sectionedDataSet.addAll(getCurrentSectionForm())
             notifyDataSetChanged()
             updateVisibility()
         }
     }
 
     private fun updateVisibility() {
-        simpleFormView.btnPrevious.isVisible = !getIsFirstSection()
+        adapterCallback.updateVisibility()
     }
 
     private fun getIsLastSection(): Boolean {
         return currentSectionIndex == (getSectionTitles().size - 1)
     }
 
-    private fun getIsFirstSection(): Boolean {
+    fun getIsFirstSection(): Boolean {
         return currentSectionIndex == 0
     }
 
@@ -175,10 +157,14 @@ class SimpleFormAdapter(
         return sectionTitles
     }
 
-    private fun getIsSectionedAdapter(): Boolean {
+    fun getIsSectionedAdapter(): Boolean {
         return isSectioned && showOneSectionAtATime && getSectionTitles().isNotEmpty()
     }
 
+
+    interface AdapterCallback {
+        fun updateVisibility()
+    }
 }
 
 

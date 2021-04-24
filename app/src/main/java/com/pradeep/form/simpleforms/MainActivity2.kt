@@ -7,10 +7,11 @@ import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.form_items.NumberInputType
 import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.model.Form
+import com.pradeep.form.simple_form.presentation.FormSubmitCallback
 import com.pradeep.form.simpleforms.databinding.ActivityMain2Binding
 import com.pradeep.form.simpleforms.databinding.ActivityMainBinding
 
-class MainActivity2 : AppCompatActivity() {
+class MainActivity2 : AppCompatActivity(), FormSubmitCallback {
     private lateinit var binding: ActivityMain2Binding
     private var sectionedForms = mutableMapOf<String, List<Form>>()
 
@@ -24,7 +25,7 @@ class MainActivity2 : AppCompatActivity() {
     private fun setSectionedForm() {
         sectionedForms["Section One"] = getForms()
         sectionedForms["Section Two"] = getForms()
-        binding.simpleForm.setData(sectionedForms)
+        binding.simpleForm.setData(sectionedForms, this)
 //        binding.simpleForm.setData(getForms())
     }
 
@@ -121,5 +122,9 @@ class MainActivity2 : AppCompatActivity() {
             )
         )
         return forms
+    }
+
+    override fun onFormSubmitted(forms: List<Form>) {
+
     }
 }

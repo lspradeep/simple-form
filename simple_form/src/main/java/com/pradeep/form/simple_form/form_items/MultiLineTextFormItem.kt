@@ -13,15 +13,15 @@ class MultiLineTextFormItem(
     BaseFormItem(binding.root, adapter) {
 
     override fun bind(form: Form) {
+        binding.editAnswer.filters = arrayOf()
 
-        if (form.charLimit != -1 && form.charLimit > 0) {
+        if (form.showCharLimitCounter && form.charLimit != -1 && form.charLimit > 0) {
             binding.editAnswer.filters = arrayOf(InputFilter.LengthFilter(form.charLimit))
-            if (form.showCharLimitCounter) {
-                binding.inputAnswer.counterMaxLength = form.charLimit
-                binding.inputAnswer.isCounterEnabled = true
-            } else {
-                binding.inputAnswer.isCounterEnabled = false
-            }
+            binding.inputAnswer.counterMaxLength = form.charLimit
+            binding.inputAnswer.isCounterEnabled = true
+
+        } else {
+            binding.inputAnswer.isCounterEnabled = false
         }
 
         form.hint?.let {
@@ -60,7 +60,7 @@ class MultiLineTextFormItem(
                     binding.inputAnswer.error = null
                 }
             }
-        }else{
+        } else {
             binding.inputAnswer.error = null
         }
     }

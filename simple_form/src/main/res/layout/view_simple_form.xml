@@ -19,25 +19,23 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="@dimen/dimen_16"
-            app:layout_constraintBottom_toTopOf="@+id/layout_sectioned_form_buttons"
+            app:layout_constraintBottom_toTopOf="@+id/layout_buttons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_sectioned_form_buttons"
+            android:id="@+id/layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_8"
             android:layout_marginTop="@dimen/dimen_8"
             android:layout_marginEnd="@dimen/dimen_8"
             android:orientation="horizontal"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_forms"
-            tools:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@id/recycler_forms">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_previous"
@@ -60,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen_8"
                 android:layout_weight="1"
-                android:text="Next"
+                android:text="Submit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_previous"

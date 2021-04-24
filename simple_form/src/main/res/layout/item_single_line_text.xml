@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/dimen_8">
+        android:layout_marginTop="@dimen/dimen_16">
 
         <include layout="@layout/layout_common" />
 
@@ -19,7 +19,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_8">
+            android:layout_marginTop="@dimen/dimen_4">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_answer"
