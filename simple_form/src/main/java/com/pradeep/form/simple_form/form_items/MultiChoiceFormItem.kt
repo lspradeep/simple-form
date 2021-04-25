@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.pradeep.form.simple_form.R
 import com.pradeep.form.simple_form.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemMultiChoiceBinding
 import com.pradeep.form.simple_form.model.Form
@@ -19,21 +20,17 @@ class MultiChoiceFormItem(
     BaseFormItem(binding.root, adapter) {
 
     override fun bind(form: Form) {
-        val selectedAnswers = mutableListOf<String>()
-        selectedAnswers.clear()
-        selectedAnswers.addAll(form.answers.orEmpty())
-
-        val choices = mutableListOf<String>()
-        choices.clear()
-        choices.addAll(form.choices?.filter { it.isNotBlank() }?.distinct().orEmpty())
-
-        var dialog: AlertDialog? = null
-
         form.hint?.let {
             binding.inputAnswer.hint = it.toString()
         } ?: run {
             binding.inputAnswer.hint = "Please choose an answer"
         }
+
+        var dialog: AlertDialog? = null
+
+        val selectedAnswers = mutableListOf<String>()
+        selectedAnswers.clear()
+        selectedAnswers.addAll(form.answers.orEmpty())
 
         if (selectedAnswers.isNotEmpty()) {
             binding.editAnswer.setText(SimpleFormUtils.convertListToSingleString(selectedAnswers))
@@ -42,48 +39,68 @@ class MultiChoiceFormItem(
             binding.inputAnswer.error = null
         }
 
-        val checkedItems = BooleanArray(choices.size)
-
-        choices.forEachIndexed { index, choiceItem ->
-            checkedItems[index] = form.answers?.contains(choiceItem) ?: false
-        }
-
         binding.editAnswer.setOnClickListener {
-            if (dialog == null) {
-                dialog = MaterialAlertDialogBuilder(binding.root.context)
-                    .setTitle(form.question)
-                    .setMultiChoiceItems(
-                        choices.toTypedArray(),
-                        checkedItems
-                    ) { _, which, isChecked ->
-                        if (isChecked) {
-                            choices[which].let {
-                                selectedAnswers.add(it)
-                            }
-                            adapter.getData().firstOrNull { it.id == form.id }?.apply {
-                                answers = selectedAnswers
-                            }
-                        } else {
-                            selectedAnswers.remove(choices[which])
-                            adapter.getData().firstOrNull { it.id == form.id }?.apply {
-                                answers = selectedAnswers
-                            }
+            val choices = mutableListOf<String>()
+            choices.clear()
+            choices.addAll(form.choices?.filter { it.isNotBlank() }?.distinct().orEmpty())
+
+            val checkedItems = BooleanArray(choices.size)
+
+            choices.forEachIndexed { index, choiceItem ->
+                checkedItems[index] = form.answers?.contains(choiceItem) ?: false
+            }
+
+            dialog = MaterialAlertDialogBuilder(binding.root.context)
+                .setTitle(form.question)
+                .setMultiChoiceItems(
+                    choices.toTypedArray(),
+                    checkedItems
+                ) { _, which, isChecked ->
+                    if (isChecked) {
+                        choices[which].let {
+                            selectedAnswers.add(it)
                         }
+                        adapter.getData()[adapterPosition].apply {
+                            answers = selectedAnswers
+                        }
+                    } else {
+                        selectedAnswers.remove(choices[which])
+                        adapter.getData()[adapterPosition].apply {
+                            answers = selectedAnswers
+                        }
+                    }
+                    binding.editAnswer.setText("")
+                    binding.editAnswer.setText(
+                        SimpleFormUtils.convertListToSingleString(
+                            selectedAnswers
+                        )
+                    )
+                    if (form.isMandatory && selectedAnswers.isNullOrEmpty()) {
+                        binding.inputAnswer.error = form.errorMessage
+                    } else {
+                        binding.inputAnswer.error = null
+                    }
+                }
+                .setPositiveButton(binding.root.context.getString(R.string.done)) { _: DialogInterface, _: Int ->
+                }
+                .setNegativeButton(binding.root.context.getString(R.string.clear)) { _: DialogInterface, _: Int ->
+                    selectedAnswers.clear()
+                    adapter.getData()[adapterPosition].apply {
+                        answers = selectedAnswers
                         binding.editAnswer.setText("")
                         binding.editAnswer.setText(
                             SimpleFormUtils.convertListToSingleString(
                                 selectedAnswers
                             )
                         )
-                        if (form.isMandatory && selectedAnswers.isNullOrEmpty()) {
-                            binding.inputAnswer.error = form.errorMessage
-                        } else {
-                            binding.inputAnswer.error = null
-                        }
+                        binding.inputAnswer.error = null
                     }
-                    .setPositiveButton("Done") { _: DialogInterface, _: Int ->
-                    }.create()
-            }
+                    if (form.isMandatory && selectedAnswers.isNullOrEmpty()) {
+                        binding.inputAnswer.error = form.errorMessage
+                    } else {
+                        binding.inputAnswer.error = null
+                    }
+                }.create()
 
             if (dialog?.isShowing != true) {
                 dialog?.show()

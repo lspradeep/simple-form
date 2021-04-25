@@ -3,4 +3,6 @@
     <string name="please_provide_an_answer">Please provide an answer</string>
     <string name="submit">Submit</string>
     <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="clear">Clear</string>
 </resources>

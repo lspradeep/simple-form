@@ -26,6 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="false"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:focusable="false"
                 android:inputType="none"
                 android:maxLines="1" />
