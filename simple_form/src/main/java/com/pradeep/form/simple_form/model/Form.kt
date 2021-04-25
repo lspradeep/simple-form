@@ -12,6 +12,7 @@ import java.util.*
 
 @Parcelize
 data class Form(
+    val id: String = UUID.randomUUID().toString(),
     val formType: Int = FormTypes.NONE,
     val question: String? = null,
     val choices: List<String>? = null,
@@ -25,14 +26,11 @@ data class Form(
     val numberInputType: NumberInputType = NumberInputType.NUMBER,
     var countryCode: String = "+91",
     val charLimit: Int = -1,
-    val showCharLimitCounter: Boolean = false,
     val errorMessage: String = "Please provide an answer",
-    var formValidationListener: String? = null
+    var formValidationListener: String? = null,
+    var sectionMapperId: String? = null
 ) : Parcelable {
-    val id: String = UUID.randomUUID().toString()
-    var isSectionTitle: Boolean = false
     var isValid = true
-
     init {
         check()
     }

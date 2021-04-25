@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.databinding.DataBindingUtil
+import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
 import com.pradeep.form.simpleforms.databinding.ActivityFormOutputDisplayBinding
@@ -22,14 +23,28 @@ class FormOutputDisplayActivity : AppCompatActivity() {
         val stringBuilder = StringBuilder()
         intent.getParcelableArrayListExtra<Form>(ARGS_FORMS)?.let { forms ->
             forms.forEach {
-                stringBuilder.append(
-                    "${it.question} - ${it.answer} - ${
-                        SimpleFormUtils.convertListToSingleString(
-                            it.answers ?: listOf()
-                        )
-                    }"
-                )
-                stringBuilder.append("\n")
+                if (it.formType == FormTypes.NONE) {
+                    stringBuilder.append("\n")
+                    stringBuilder.append("\n")
+                    stringBuilder.append(it.sectionTitle)
+                    stringBuilder.append("\n")
+                    stringBuilder.append("\n")
+                } else if (it.formType == FormTypes.MULTI_CHOICE) {
+                    stringBuilder.append(
+                        "${it.question} - ${
+                            SimpleFormUtils.convertListToSingleString(
+                                it.answers ?: listOf()
+                            )
+                        }"
+                    )
+                    stringBuilder.append("\n")
+                } else {
+                    stringBuilder.append(
+                        "${it.question} - ${it.answer}"
+                    )
+                    stringBuilder.append("\n")
+                }
+
             }
 
             binding.textOutput.text = stringBuilder

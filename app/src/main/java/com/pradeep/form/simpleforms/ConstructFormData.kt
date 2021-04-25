@@ -93,7 +93,6 @@ object ConstructFormData {
                 question = "Name",
                 hint = "please enter your name",
                 singleLineTextType = SingleLineTextType.TEXT,
-                isMandatory = true
             )
         )
         forms.add(
@@ -102,7 +101,6 @@ object ConstructFormData {
                 question = "Age",
                 hint = "please enter your age",
                 numberInputType = NumberInputType.NUMBER,
-                isMandatory = true
             )
         )
         forms.add(
@@ -111,7 +109,6 @@ object ConstructFormData {
                 question = "Email",
                 hint = "please enter your Email address",
                 singleLineTextType = SingleLineTextType.EMAIL_ADDRESS,
-                isMandatory = true
             )
         )
         forms.add(
@@ -120,7 +117,6 @@ object ConstructFormData {
                 question = "Phone number",
                 hint = "please provide your phone number",
                 numberInputType = NumberInputType.PHONE_NUMBER,
-                isMandatory = true
             )
         )
         forms.add(
@@ -129,7 +125,6 @@ object ConstructFormData {
                 question = "Gender",
                 hint = "please provide your gender",
                 choices = listOf("Male", "Female", "Other"),
-                isMandatory = true
             )
         )
         forms.add(
@@ -151,7 +146,6 @@ object ConstructFormData {
                 question = "College Name",
                 hint = "please enter your name",
                 singleLineTextType = SingleLineTextType.TEXT,
-                isMandatory = true
             )
         )
         forms.add(
@@ -160,13 +154,13 @@ object ConstructFormData {
                 question = "Your score in college",
                 hint = "example: 7.6",
                 numberInputType = NumberInputType.NUMBER,
-                isMandatory = true
             )
         )
         forms.add(
             Form(
                 formType = FormTypes.MULTI_LINE_TEXT,
                 question = "Describe about the projects you worked on",
+                charLimit = 5,
             )
         )
         return forms
@@ -180,7 +174,6 @@ object ConstructFormData {
                 question = "Father's Name",
                 hint = "please enter your father's name",
                 singleLineTextType = SingleLineTextType.TEXT,
-                isMandatory = true
             )
         )
         forms.add(
@@ -189,7 +182,6 @@ object ConstructFormData {
                 question = "Mother's Name",
                 hint = "please enter your mother's name",
                 singleLineTextType = SingleLineTextType.TEXT,
-                isMandatory = true
             )
         )
         return forms

@@ -50,7 +50,6 @@ class NumberInputFormItem(
         binding.editAnswer.doAfterTextChanged { input ->
             adapter.getData()[adapterPosition].apply {
                 answer = input.toString()
-
                 if (form.isMandatory && answer.isNullOrBlank()) {
                     binding.inputAnswer.error = form.errorMessage
                 } else {

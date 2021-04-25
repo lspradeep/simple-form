@@ -19,7 +19,7 @@ class SingleLineTextFormItem(
 
         if (form.singleLineTextType == SingleLineTextType.TEXT) {
             binding.editAnswer.inputType = InputType.TYPE_CLASS_TEXT
-            if (form.showCharLimitCounter && form.charLimit != -1 && form.charLimit > 0) {
+            if (form.charLimit != -1 && form.charLimit > 0) {
                 binding.editAnswer.filters = arrayOf(InputFilter.LengthFilter(form.charLimit))
                 binding.inputAnswer.counterMaxLength = form.charLimit
                 binding.inputAnswer.isCounterEnabled = true

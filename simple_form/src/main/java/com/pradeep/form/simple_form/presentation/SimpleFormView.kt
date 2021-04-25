@@ -19,7 +19,7 @@ class SimpleFormView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?
 ) :
-    RelativeLayout(context, attrs), SimpleFormAdapter.AdapterCallback {
+    RelativeLayout(context, attrs) {
 
     private var showOneSectionAtOnce: Boolean = false
     private var simpleFormAdapter: SimpleFormAdapter? = null
@@ -55,7 +55,6 @@ class SimpleFormView @JvmOverloads constructor(
             forms = forms,
             sectionedForms = null,
             showOneSectionAtATime = false,
-            adapterCallback = this
         )
 
         binding.recyclerForms.apply {
@@ -69,12 +68,10 @@ class SimpleFormView @JvmOverloads constructor(
     }
 
     private fun initView() {
-        if (showOneSectionAtOnce && simpleFormAdapter?.getSectionTitles()?.size ?: 0 > 0) {
+        if (simpleFormAdapter?.getIsSectionedAdapter() == true) {
             binding.btnNext.text = context.getString(R.string.next)
-            binding.btnPrevious.isVisible = true
         } else {
             binding.btnNext.text = context.getString(R.string.submit)
-            binding.btnPrevious.isVisible = false
         }
     }
 
@@ -94,8 +91,7 @@ class SimpleFormView @JvmOverloads constructor(
         simpleFormAdapter = SimpleFormAdapter(
             sectionedForms = forms,
             forms = null,
-            showOneSectionAtATime = showOneSectionAtOnce,
-            adapterCallback = this
+            showOneSectionAtATime = showOneSectionAtOnce
         )
         binding.recyclerForms.apply {
             layoutManager = linearLayoutManager
@@ -107,13 +103,37 @@ class SimpleFormView @JvmOverloads constructor(
         setListeners()
     }
 
+    private fun updateUi() {
+        binding.btnPrevious.isVisible =
+            !(simpleFormAdapter?.getIsSectionedAdapter() == true && simpleFormAdapter?.getIsFirstSection() == true)
+        if (simpleFormAdapter?.getIsLastSection()==true){
+            binding.btnNext.text = context.getString(R.string.submit)
+        }else{
+            binding.btnNext.text = context.getString(R.string.next)
+        }
+    }
+
     private fun setListeners() {
-        if (showOneSectionAtOnce && simpleFormAdapter?.getSectionTitles()?.size ?: 0 > 0) {
+        if (simpleFormAdapter?.getIsSectionedAdapter() == true) {
             binding.btnNext.setOnClickListener {
-                simpleFormAdapter?.showNextSection()
-                linearLayoutManager.scrollToPositionWithOffset(0, 0)
+                simpleFormAdapter?.storeCurrentSectionData()
+                if (simpleFormAdapter?.getIsLastSection() != true) {
+                    //btn next
+                    if (validateCurrentSectionInputs()) {
+                        simpleFormAdapter?.showNextSection()
+                        linearLayoutManager.scrollToPositionWithOffset(0, 0)
+                    }
+                } else {
+                    //submit button
+                    if (validateCurrentSectionInputs()) {
+                        callback?.onFormSubmitted(simpleFormAdapter?.getSectionedFormOutputData() ?: listOf())
+                    }
+                }
+
+                updateUi()
             }
         } else {
+            //For Normal Forms
             binding.btnNext.setOnClickListener {
                 //submit button
                 if (validateInputs()) {
@@ -123,19 +143,22 @@ class SimpleFormView @JvmOverloads constructor(
         }
 
         binding.btnPrevious.setOnClickListener {
-            simpleFormAdapter?.showPreviousSection()
-            linearLayoutManager.scrollToPositionWithOffset(0, 0)
+            if (simpleFormAdapter?.getIsFirstSection() != true) {
+                simpleFormAdapter?.showPreviousSection()
+                linearLayoutManager.scrollToPositionWithOffset(0, 0)
+            }
+            updateUi()
         }
     }
 
     //Only for library users
-    fun getFormItems(): List<Form> {
+    fun getData(): List<Form> {
         return simpleFormAdapter?.getData()?.filter { it.formType != FormTypes.NONE } ?: listOf()
     }
 
     //Only for library users
-    fun getSectionTitles(): List<String> {
-        return simpleFormAdapter?.getSectionTitles() ?: listOf()
+    fun getSectionIdTitlePairs(): List<Pair<String, String>> {
+        return simpleFormAdapter?.getSectionIdTitlePairs() ?: listOf()
     }
 
     private fun validateInputs(): Boolean {
@@ -154,9 +177,25 @@ class SimpleFormView @JvmOverloads constructor(
         return isValid
     }
 
-    override fun updateVisibility() {
-        if (simpleFormAdapter?.getIsSectionedAdapter() == true)
-            binding.btnPrevious.isVisible = (simpleFormAdapter?.getIsFirstSection() == false)
+    private fun validateCurrentSectionInputs(): Boolean {
+        val currentSectionFormItems = simpleFormAdapter?.getCurrentSectionData()
+        var isValid = true
+        for (index in currentSectionFormItems?.indices ?: 0..0) {
+            val element = currentSectionFormItems?.get(index)
+            if (element?.isFormItemValid() == false) {
+                linearLayoutManager.scrollToPositionWithOffset(index, 0)
+                simpleFormAdapter?.notifyItemChanged(index)
+                isValid = false
+                Timber.d("check ${element.formType} - ${element.question} at index $index")
+                break
+            }
+        }
+        return isValid
     }
+
+//    override fun updateVisibility() {
+//        if (simpleFormAdapter?.getIsSectionedAdapter() == true)
+//            binding.btnPrevious.isVisible = (simpleFormAdapter?.getIsFirstSection() == false)
+//    }
 
 }

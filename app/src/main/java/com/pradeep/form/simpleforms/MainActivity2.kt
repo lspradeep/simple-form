@@ -5,13 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.pradeep.form.simple_form.form_items.FormTypes
-import com.pradeep.form.simple_form.form_items.NumberInputType
-import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.model.Form
 import com.pradeep.form.simple_form.presentation.FormSubmitCallback
 import com.pradeep.form.simpleforms.databinding.ActivityMain2Binding
-import com.pradeep.form.simpleforms.databinding.ActivityMainBinding
 
 class MainActivity2 : AppCompatActivity(), FormSubmitCallback {
     private lateinit var binding: ActivityMain2Binding
@@ -37,7 +33,8 @@ class MainActivity2 : AppCompatActivity(), FormSubmitCallback {
     }
 
     override fun onFormSubmitted(forms: List<Form>) {
-
+        startActivity(FormOutputDisplayActivity.newIntent(this, forms))
+        binding.simpleForm.getSectionIdTitlePairs()
     }
 
     companion object {

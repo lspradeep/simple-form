@@ -15,7 +15,7 @@ class MultiLineTextFormItem(
     override fun bind(form: Form) {
         binding.editAnswer.filters = emptyArray()
 
-        if (form.showCharLimitCounter && form.charLimit != -1 && form.charLimit > 0) {
+        if (form.charLimit != -1 && form.charLimit > 0) {
             binding.editAnswer.filters = arrayOf(InputFilter.LengthFilter(form.charLimit))
             binding.inputAnswer.counterMaxLength = form.charLimit
             binding.inputAnswer.isCounterEnabled = true

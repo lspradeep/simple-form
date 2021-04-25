@@ -4,23 +4,22 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.pradeep.form.simple_form.databinding.ViewSimpleFormBinding
 import com.pradeep.form.simple_form.form_items.BaseFormItem
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
+import com.pradeep.form.simple_form.utils.SimpleFormUtils
 
 class SimpleFormAdapter(
     forms: List<Form>? = null,
     val sectionedForms: Map<String, List<Form>>? = null,
-    val showOneSectionAtATime: Boolean = false,
-    val adapterCallback: AdapterCallback
+    val showOneSectionAtATime: Boolean = false
 ) : RecyclerView.Adapter<BaseFormItem>() {
 
     private var dataSet = mutableListOf<Form>()
     private var sectionedDataSet = mutableListOf<Form>()
-    private var sectionTitles = mutableListOf<String>()
-    private var isSectioned = false
-    private var currentSectionTitle: String? = null
+    private var sectionTitleIdPairs = mutableListOf<Pair<String, String>>()
+    private var isSectionedForm = false
+    private var currentSectionId: String? = null
     private var currentSectionIndex = -1
     private var sectionedFormOutputData = mutableMapOf<String, List<Form>>()
 
@@ -29,35 +28,29 @@ class SimpleFormAdapter(
             dataSet.addAll(it)
         } ?: run {
             sectionedForms?.let {
-                isSectioned = true
-                sectionTitles.addAll(it.keys)
-                it.forEach { entry: Map.Entry<String, List<Form>> ->
-                    dataSet.add(
-                        Form(
-                            sectionTitle = entry.key,
-                            formType = FormTypes.NONE
-                        ).apply { isSectionTitle = true })
-                    entry.value.forEach { form: Form ->
-                        form.sectionTitle = entry.key
-                        dataSet.add(form)
+                isSectionedForm = true
+                dataSet.addAll(SimpleFormUtils.convertMapToList(it))
+                dataSet.forEach { form ->
+                    if (form.formType == FormTypes.NONE && !form.sectionTitle.isNullOrBlank()) {
+                        sectionTitleIdPairs.add(Pair(form.id, form.sectionTitle!!))
                     }
                 }
+
             }
         }
         if (getIsSectionedAdapter()) {
             sectionedDataSet.clear()
-            currentSectionTitle = getSectionTitles()[0]
+            currentSectionId = getSectionIdTitlePairs()[0].first
             currentSectionIndex = 0
-            sectionedDataSet.addAll(getCurrentSectionForm())
-            updateVisibility()
+            sectionedDataSet.addAll(getCurrentSectionData())
         }
     }
 
-    private fun getCurrentSectionForm(): List<Form> {
-        return if (!sectionedFormOutputData[getSectionTitles()[currentSectionIndex]].isNullOrEmpty()) {
-            sectionedFormOutputData[getSectionTitles()[currentSectionIndex]].orEmpty()
+    fun getCurrentSectionData(): List<Form> {
+        return if (!sectionedFormOutputData[currentSectionId].isNullOrEmpty()) {
+            sectionedFormOutputData[currentSectionId].orEmpty()
         } else {
-            dataSet.filter { it.sectionTitle == currentSectionTitle }
+            dataSet.filter { it.sectionMapperId == currentSectionId }
         }
     }
 
@@ -78,7 +71,6 @@ class SimpleFormAdapter(
                 holderBase.description?.isVisible = !(form.description.isNullOrBlank())
                 holderBase.question?.text = form.question
                 holderBase.description?.text = form.description
-
                 holderBase.bind(form = form)
             }
         } else {
@@ -88,7 +80,6 @@ class SimpleFormAdapter(
                 holderBase.description?.isVisible = !(form.description.isNullOrBlank())
                 holderBase.question?.text = form.question
                 holderBase.description?.text = form.description
-
                 holderBase.bind(form = form)
             }
         }
@@ -105,65 +96,58 @@ class SimpleFormAdapter(
 
 
     fun getData(): List<Form> {
-        return if (getIsSectionedAdapter()) sectionedDataSet else dataSet
+        return if (getIsSectionedAdapter()) getCurrentSectionData() else dataSet
+    }
+
+    fun getSectionedFormOutputData(): List<Form> {
+        return SimpleFormUtils.constructSectionedFormOutput(
+            sectionedFormOutputData,
+            sectionTitleIdPairs
+        )
     }
 
     fun showNextSection() {
-        //store current section data
-        sectionedFormOutputData[getSectionTitles()[currentSectionIndex]] = sectionedDataSet
-
         if (!getIsLastSection()) {
             currentSectionIndex++
-            currentSectionTitle = getSectionTitles()[currentSectionIndex]
+            currentSectionId = getSectionIdTitlePairs()[currentSectionIndex].first
             sectionedDataSet.clear()
-            sectionedDataSet.addAll(getCurrentSectionForm())
+            sectionedDataSet.addAll(getCurrentSectionData())
             notifyDataSetChanged()
-            updateVisibility()
         }
 
     }
 
     fun showPreviousSection() {
-        //store current section data
-        sectionedFormOutputData[getSectionTitles()[currentSectionIndex]] = sectionedDataSet
-
         if (!getIsFirstSection()) {
             currentSectionIndex--
-            currentSectionTitle = getSectionTitles()[currentSectionIndex]
+            currentSectionId = getSectionIdTitlePairs()[currentSectionIndex].first
             sectionedDataSet.clear()
-            sectionedDataSet.addAll(getCurrentSectionForm())
+            sectionedDataSet.addAll(getCurrentSectionData())
             notifyDataSetChanged()
-            updateVisibility()
         }
     }
 
-    private fun updateVisibility() {
-        adapterCallback.updateVisibility()
-    }
-
-    private fun getIsLastSection(): Boolean {
-        return currentSectionIndex == (getSectionTitles().size - 1)
+    fun getIsLastSection(): Boolean {
+        return currentSectionIndex == (getSectionIdTitlePairs().size - 1)
     }
 
     fun getIsFirstSection(): Boolean {
         return currentSectionIndex == 0
     }
 
-    fun getSectionData(sectionTitle: String): List<Form> {
-        return dataSet.filter { it.sectionTitle == sectionTitle }
-    }
-
-    fun getSectionTitles(): List<String> {
-        return sectionTitles
+    fun getSectionIdTitlePairs(): List<Pair<String, String>> {
+        return sectionTitleIdPairs
     }
 
     fun getIsSectionedAdapter(): Boolean {
-        return isSectioned && showOneSectionAtATime && getSectionTitles().isNotEmpty()
+        return isSectionedForm && showOneSectionAtATime && getSectionIdTitlePairs().isNotEmpty()
     }
 
-
-    interface AdapterCallback {
-        fun updateVisibility()
+    fun storeCurrentSectionData() {
+        currentSectionId?.let { sectionId ->
+//            sectionedFormOutputData[sectionId] = sectionedDataSet
+            sectionedFormOutputData.put(sectionId, getData())
+        }
     }
 }
 

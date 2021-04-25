@@ -4,9 +4,45 @@ import android.text.TextUtils
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber.CountryCodeSource
+import com.pradeep.form.simple_form.form_items.FormTypes
+import com.pradeep.form.simple_form.model.Form
 
 
 object SimpleFormUtils {
+
+    fun convertMapToList(sectionedForm: Map<String, List<Form>>): List<Form> {
+        val forms = mutableListOf<Form>()
+        sectionedForm.forEach { entry: Map.Entry<String, List<Form>> ->
+            val titleForm = Form(
+                sectionTitle = entry.key,
+                formType = FormTypes.NONE
+            )
+            titleForm.sectionMapperId = titleForm.id
+            forms.add(titleForm)
+
+            entry.value.forEach { form: Form ->
+                form.sectionMapperId = titleForm.id
+                forms.add(form)
+            }
+        }
+        return forms
+    }
+
+    fun constructSectionedFormOutput(
+        sectionedFormOutput: Map<String, List<Form>>,
+        sectionTitleIdPairs: List<Pair<String, String>>
+    ): List<Form> {
+        val forms = mutableListOf<Form>()
+        sectionTitleIdPairs.forEach { titlePair ->
+            sectionedFormOutput[titlePair.first]?.let {
+                it.forEach { form ->
+                    forms.add(form)
+                }
+            }
+        }
+        return forms
+    }
+
     fun convertListToSingleString(answers: List<String>): String {
         val builder = StringBuilder()
         answers.forEachIndexed { index, answer ->
