@@ -92,3 +92,13 @@ fun getFormData(): List<Form> {
 ```
 binding.simpleForm.setData(getFormData(),this)
 ```
+
+### Step 4: 
+```
+implement FormSubmitCallback in your activity and override the following function 
+
+    override fun onFormSubmitted(forms: List<Form>) {
+         //do something with the result
+    }
+```
+
