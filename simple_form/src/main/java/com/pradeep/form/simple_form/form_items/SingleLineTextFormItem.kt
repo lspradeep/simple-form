@@ -15,7 +15,7 @@ class SingleLineTextFormItem(
     BaseFormItem(binding.root, adapter) {
 
     override fun bind(form: Form) {
-        binding.editAnswer.filters = arrayOf()
+        binding.editAnswer.filters = emptyArray()
 
         if (form.singleLineTextType == SingleLineTextType.TEXT) {
             binding.editAnswer.inputType = InputType.TYPE_CLASS_TEXT
@@ -41,11 +41,11 @@ class SingleLineTextFormItem(
                 binding.editAnswer.setText(answer)
             } else {
                 binding.editAnswer.text = null
-                binding.inputAnswer.error = null
+                binding.inputAnswer.isErrorEnabled=false
             }
         } ?: run {
             binding.editAnswer.text = null
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
 
         binding.editAnswer.doAfterTextChanged { input ->
@@ -57,7 +57,7 @@ class SingleLineTextFormItem(
                         binding.inputAnswer.error = errorMessage
                     } else {
                         answer = input.toString()
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
 
                 } else if (singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
@@ -75,7 +75,7 @@ class SingleLineTextFormItem(
                         binding.inputAnswer.error = "Please provide a valid email address"
                     } else {
                         answer = input.toString()
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 }
 
@@ -89,7 +89,7 @@ class SingleLineTextFormItem(
                     if (isMandatory && answer.isNullOrBlank()) {
                         binding.inputAnswer.error = errorMessage
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 } else if (singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
                     if (isMandatory && answer.isNullOrBlank()) {
@@ -101,12 +101,12 @@ class SingleLineTextFormItem(
                     } else if (!answer.isNullOrBlank() && !answer.toString().isEmailValid()) {
                         binding.inputAnswer.error = "Please provide a valid email address"
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 }
             }
         } else {
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
     }
 

@@ -9,6 +9,7 @@ import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
 import kotlinx.android.parcel.Parcelize
 import java.lang.Exception
 import java.util.*
+
 @Parcelize
 data class Form(
     val formType: Int = FormTypes.NONE,
@@ -27,7 +28,7 @@ data class Form(
     val showCharLimitCounter: Boolean = false,
     val errorMessage: String = "Please provide an answer",
     var formValidationListener: String? = null
-):Parcelable {
+) : Parcelable {
     val id: String = UUID.randomUUID().toString()
     var isSectionTitle: Boolean = false
     var isValid = true
@@ -42,6 +43,12 @@ data class Form(
         }
         if (formType == FormTypes.NONE && sectionTitle.isNullOrBlank()) {
             throw Exception("'FormTypes.NONE' is used internally for creating section titles, when you set 'Map<String, List<Form>>' to 'SimpleFormView'")
+        }
+        if (formType == FormTypes.SINGLE_CHOICE && choices?.size ?: 0 == 0) {
+            throw Exception("you mush provide 'choices' for 'FormTypes.SINGLE_CHOICE'")
+        }
+        if (formType == FormTypes.MULTI_CHOICE && choices?.size ?: 0 == 0) {
+            throw Exception("you mush provide 'choices' for 'FormTypes.MULTI_CHOICE'")
         }
     }
 

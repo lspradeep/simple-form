@@ -13,6 +13,7 @@ import com.pradeep.form.simple_form.databinding.ViewSimpleFormBinding
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
 import timber.log.Timber
+import java.lang.Exception
 
 class SimpleFormView @JvmOverloads constructor(
     context: Context,
@@ -20,7 +21,7 @@ class SimpleFormView @JvmOverloads constructor(
 ) :
     RelativeLayout(context, attrs), SimpleFormAdapter.AdapterCallback {
 
-    private var showOneSectionAtATime: Boolean
+    private var showOneSectionAtOnce: Boolean = false
     private var simpleFormAdapter: SimpleFormAdapter? = null
     private var callback: FormSubmitCallback? = null
     private val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -33,14 +34,13 @@ class SimpleFormView @JvmOverloads constructor(
         ).apply {
 
             try {
-                showOneSectionAtATime =
+                showOneSectionAtOnce =
                     getBoolean(R.styleable.SimpleFormView_showOneSectionAtATime, false)
             } finally {
                 recycle()
             }
         }
     }
-
 
     private val binding: ViewSimpleFormBinding = ViewSimpleFormBinding.inflate(
         LayoutInflater.from(context),
@@ -69,7 +69,7 @@ class SimpleFormView @JvmOverloads constructor(
     }
 
     private fun initView() {
-        if (showOneSectionAtATime && simpleFormAdapter?.getSectionTitles()?.size ?: 0 > 0) {
+        if (showOneSectionAtOnce && simpleFormAdapter?.getSectionTitles()?.size ?: 0 > 0) {
             binding.btnNext.text = context.getString(R.string.next)
             binding.btnPrevious.isVisible = true
         } else {
@@ -78,13 +78,23 @@ class SimpleFormView @JvmOverloads constructor(
         }
     }
 
-    fun setData(forms: Map<String, List<Form>>, callback: FormSubmitCallback) {
+    fun setData(
+        forms: Map<String, List<Form>>,
+        callback: FormSubmitCallback,
+        showOnSectionAtATime: Boolean = false
+    ) {
+        showOneSectionAtOnce = showOnSectionAtATime
+        forms.keys.forEach { key ->
+            if (forms[key]?.size ?: 0 <= 0) {
+                throw Exception("please add items to '$key' section")
+            }
+        }
         this.callback = callback
 
         simpleFormAdapter = SimpleFormAdapter(
             sectionedForms = forms,
             forms = null,
-            showOneSectionAtATime = showOneSectionAtATime,
+            showOneSectionAtATime = showOneSectionAtOnce,
             adapterCallback = this
         )
         binding.recyclerForms.apply {
@@ -98,7 +108,7 @@ class SimpleFormView @JvmOverloads constructor(
     }
 
     private fun setListeners() {
-        if (showOneSectionAtATime && simpleFormAdapter?.getSectionTitles()?.size ?: 0 > 0) {
+        if (showOneSectionAtOnce && simpleFormAdapter?.getSectionTitles()?.size ?: 0 > 0) {
             binding.btnNext.setOnClickListener {
                 simpleFormAdapter?.showNextSection()
                 linearLayoutManager.scrollToPositionWithOffset(0, 0)

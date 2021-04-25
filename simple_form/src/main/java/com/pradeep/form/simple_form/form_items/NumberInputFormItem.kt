@@ -15,7 +15,9 @@ class NumberInputFormItem(
     BaseFormItem(binding.root, adapter) {
 
     override fun bind(form: Form) {
-        binding.editAnswer.inputType = InputType.TYPE_NULL
+        binding.editAnswer.filters = emptyArray()
+        binding.inputAnswer.isCounterEnabled = false
+
         when (form.numberInputType) {
             NumberInputType.NUMBER -> {
                 binding.editAnswer.inputType = InputType.TYPE_CLASS_NUMBER
@@ -38,11 +40,11 @@ class NumberInputFormItem(
                 binding.editAnswer.setText(answer)
             } else {
                 binding.editAnswer.text = null
-                binding.inputAnswer.error = null
+                binding.inputAnswer.isErrorEnabled=false
             }
         } ?: run {
             binding.editAnswer.text = null
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
 
         binding.editAnswer.doAfterTextChanged { input ->
@@ -52,7 +54,7 @@ class NumberInputFormItem(
                 if (form.isMandatory && answer.isNullOrBlank()) {
                     binding.inputAnswer.error = form.errorMessage
                 } else {
-                    binding.inputAnswer.error = null
+                    binding.inputAnswer.isErrorEnabled=false
                 }
             }
         }
@@ -76,18 +78,18 @@ class NumberInputFormItem(
                     ) {
                         binding.inputAnswer.error = errorMessage
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 } else {
                     if (isMandatory && answer.isNullOrBlank()) {
                         binding.inputAnswer.error = errorMessage
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 }
             }
         } else {
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
     }
 

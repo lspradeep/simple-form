@@ -13,7 +13,7 @@ class MultiLineTextFormItem(
     BaseFormItem(binding.root, adapter) {
 
     override fun bind(form: Form) {
-        binding.editAnswer.filters = arrayOf()
+        binding.editAnswer.filters = emptyArray()
 
         if (form.showCharLimitCounter && form.charLimit != -1 && form.charLimit > 0) {
             binding.editAnswer.filters = arrayOf(InputFilter.LengthFilter(form.charLimit))
@@ -33,11 +33,11 @@ class MultiLineTextFormItem(
                 binding.editAnswer.setText(answer)
             } else {
                 binding.editAnswer.text = null
-                binding.inputAnswer.error = null
+                binding.inputAnswer.isErrorEnabled=false
             }
         } ?: run {
             binding.editAnswer.text = null
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
 
         binding.editAnswer.doAfterTextChanged { input ->
@@ -46,7 +46,7 @@ class MultiLineTextFormItem(
                     binding.inputAnswer.error = errorMessage
                 } else {
                     answer = input.toString()
-                    binding.inputAnswer.error = null
+                    binding.inputAnswer.isErrorEnabled=false
                 }
             }
         }
@@ -57,11 +57,11 @@ class MultiLineTextFormItem(
                 if (isMandatory && answer.isNullOrBlank()) {
                     binding.inputAnswer.error = errorMessage
                 } else {
-                    binding.inputAnswer.error = null
+                    binding.inputAnswer.isErrorEnabled=false
                 }
             }
         } else {
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
     }
 

@@ -16,7 +16,12 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
         binding.btnSectionedForm.setOnClickListener {
-            startActivity(Intent(this, MainActivity2::class.java))
+            startActivity(
+                MainActivity2.newIntent(
+                    this,
+                    binding.checkboxShowOneSectionAtATime.isChecked
+                )
+            )
         }
     }
 }

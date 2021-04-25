@@ -29,6 +29,13 @@
             android:layout_marginTop="@dimen/dimen_16"
             android:text="Sectioned Form" />
 
+        <CheckBox
+            android:id="@+id/checkbox_show_one_section_at_a_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Show one section at a time in section form" />
+
 
     </LinearLayout>
 </layout>

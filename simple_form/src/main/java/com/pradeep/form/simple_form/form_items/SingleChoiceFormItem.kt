@@ -32,11 +32,11 @@ class SingleChoiceFormItem(
                 binding.editAnswer.setText(answer)
             } else {
                 binding.editAnswer.text = null
-                binding.inputAnswer.error = null
+                binding.inputAnswer.isErrorEnabled=false
             }
         } ?: run {
             binding.editAnswer.text = null
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
 
         binding.editAnswer.setOnClickListener {
@@ -53,12 +53,12 @@ class SingleChoiceFormItem(
                     adapter.getData()[adapterPosition].apply {
                         answer = choices[which]
                         binding.editAnswer.setText(answer)
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                     if (form.isMandatory && form.answer.isNullOrEmpty()) {
                         binding.inputAnswer.error = form.errorMessage
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 }
                 .setPositiveButton(binding.root.context.getString(R.string.done)) { _: DialogInterface, _: Int -> }
@@ -66,12 +66,12 @@ class SingleChoiceFormItem(
                     adapter.getData()[adapterPosition].apply {
                         answer = null
                         binding.editAnswer.text = answer
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                     if (form.isMandatory && form.answer.isNullOrEmpty()) {
                         binding.inputAnswer.error = form.errorMessage
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 }.create()
             if (dialog?.isShowing != true) {
@@ -103,11 +103,11 @@ class SingleChoiceFormItem(
                 if (isMandatory && answer.isNullOrBlank()) {
                     binding.inputAnswer.error = errorMessage
                 } else {
-                    binding.inputAnswer.error = null
+                    binding.inputAnswer.isErrorEnabled=false
                 }
             }
         } else {
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
     }
 

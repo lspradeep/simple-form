@@ -36,7 +36,7 @@ class MultiChoiceFormItem(
             binding.editAnswer.setText(SimpleFormUtils.convertListToSingleString(selectedAnswers))
         } else {
             binding.editAnswer.text = null
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
 
         binding.editAnswer.setOnClickListener {
@@ -78,7 +78,7 @@ class MultiChoiceFormItem(
                     if (form.isMandatory && selectedAnswers.isNullOrEmpty()) {
                         binding.inputAnswer.error = form.errorMessage
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 }
                 .setPositiveButton(binding.root.context.getString(R.string.done)) { _: DialogInterface, _: Int ->
@@ -93,12 +93,12 @@ class MultiChoiceFormItem(
                                 selectedAnswers
                             )
                         )
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                     if (form.isMandatory && selectedAnswers.isNullOrEmpty()) {
                         binding.inputAnswer.error = form.errorMessage
                     } else {
-                        binding.inputAnswer.error = null
+                        binding.inputAnswer.isErrorEnabled=false
                     }
                 }.create()
 
@@ -131,11 +131,11 @@ class MultiChoiceFormItem(
                 if (isMandatory && answers.isNullOrEmpty()) {
                     binding.inputAnswer.error = errorMessage
                 } else {
-                    binding.inputAnswer.error = null
+                    binding.inputAnswer.isErrorEnabled=false
                 }
             }
         } else {
-            binding.inputAnswer.error = null
+            binding.inputAnswer.isErrorEnabled=false
         }
     }
 

@@ -1,5 +1,7 @@
 package com.pradeep.form.simpleforms
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -23,108 +25,27 @@ class MainActivity2 : AppCompatActivity(), FormSubmitCallback {
     }
 
     private fun setSectionedForm() {
-        sectionedForms["Section One"] = getForms()
-        sectionedForms["Section Two"] = getForms()
-        binding.simpleForm.setData(sectionedForms, this)
-//        binding.simpleForm.setData(getForms())
-    }
+        sectionedForms["Personal Information"] = ConstructFormData.getSection1FormData()
+        sectionedForms["Education"] = ConstructFormData.getSection2FormData()
+        sectionedForms["Family"] = ConstructFormData.getSection3FormData()
 
-    private fun getForms(): List<Form> {
-        val forms = mutableListOf<Form>()
-        forms.add(
-            Form(
-                formType = FormTypes.SINGLE_LINE_TEXT,
-                question = "Single Line Text",
-                hint = "hint 1",
-                charLimit = 4,
+        binding.simpleForm.setData(
+            sectionedForms, this, intent.getBooleanExtra(
+                ARGS_SHOW_ONE_SECTION_AT_A_TIME, false
             )
         )
-        forms.add(
-            Form(
-                formType = FormTypes.SINGLE_LINE_TEXT,
-                question = "Provide Email address",
-                description = "description 1",
-                hint = "hint 1",
-                singleLineTextType = SingleLineTextType.EMAIL_ADDRESS
-            )
-        )
-        forms.add(
-            Form(
-                formType = FormTypes.MULTI_LINE_TEXT,
-                question = "Multi Line Text",
-                description = "description 2",
-                hint = "hint 2",
-                charLimit = 150,
-                showCharLimitCounter = true
-            )
-        )
-        forms.add(
-            Form(
-                formType = FormTypes.SINGLE_CHOICE,
-                question = "Single choice",
-                description = "description 3",
-                hint = "hint 3",
-                choices = listOf(
-                    "one",
-                    "two",
-                    "3",
-                    "one",
-                    "two",
-                    "3"
-                )
-            )
-        )
-        forms.add(
-            Form(
-                formType = FormTypes.MULTI_CHOICE,
-                question = "Multi choice",
-                description = "description 3",
-                hint = "hint 3",
-                choices = listOf(
-                    "one",
-                    "two",
-                    "3",
-                    "one",
-                    "two",
-                    "3",
-                    "one"
-                ),
-            )
-        )
-        forms.add(
-            Form(
-                isMandatory = true,
-                formType = FormTypes.NUMBER,
-                question = "Number",
-                description = "description 3",
-                hint = "hint 3",
-                numberInputType = NumberInputType.NUMBER
-            )
-        )
-        forms.add(
-            Form(
-                isMandatory = true,
-                formType = FormTypes.NUMBER,
-                question = "Decimal number",
-                description = "description 3",
-                hint = "hint 3",
-                numberInputType = NumberInputType.DECIMAL_NUMBER,
-            )
-        )
-        forms.add(
-            Form(
-                isMandatory = true,
-                formType = FormTypes.NUMBER,
-                question = "Phone number",
-                description = "description 3",
-                hint = "hint 3",
-                numberInputType = NumberInputType.PHONE_NUMBER
-            )
-        )
-        return forms
     }
 
     override fun onFormSubmitted(forms: List<Form>) {
 
+    }
+
+    companion object {
+        private const val ARGS_SHOW_ONE_SECTION_AT_A_TIME = "SHOW_ONE_SECTION_AT_A_TIME"
+        fun newIntent(context: Context, showOnSectionAtATime: Boolean): Intent {
+            val intent = Intent(context, MainActivity2::class.java)
+            intent.putExtra(ARGS_SHOW_ONE_SECTION_AT_A_TIME, showOnSectionAtATime)
+            return intent
+        }
     }
 }
