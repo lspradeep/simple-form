@@ -40,11 +40,11 @@ class NumberInputFormItem(
                 binding.editAnswer.setText(answer)
             } else {
                 binding.editAnswer.text = null
-                binding.inputAnswer.isErrorEnabled=false
+                binding.inputAnswer.isErrorEnabled = false
             }
         } ?: run {
             binding.editAnswer.text = null
-            binding.inputAnswer.isErrorEnabled=false
+            binding.inputAnswer.isErrorEnabled = false
         }
 
         binding.editAnswer.doAfterTextChanged { input ->
@@ -53,7 +53,7 @@ class NumberInputFormItem(
                 if (form.isMandatory && answer.isNullOrBlank()) {
                     binding.inputAnswer.error = form.errorMessage
                 } else {
-                    binding.inputAnswer.isErrorEnabled=false
+                    binding.inputAnswer.isErrorEnabled = false
                 }
             }
         }
@@ -77,18 +77,18 @@ class NumberInputFormItem(
                     ) {
                         binding.inputAnswer.error = errorMessage
                     } else {
-                        binding.inputAnswer.isErrorEnabled=false
+                        binding.inputAnswer.isErrorEnabled = false
                     }
                 } else {
                     if (isMandatory && answer.isNullOrBlank()) {
                         binding.inputAnswer.error = errorMessage
                     } else {
-                        binding.inputAnswer.isErrorEnabled=false
+                        binding.inputAnswer.isErrorEnabled = false
                     }
                 }
             }
         } else {
-            binding.inputAnswer.isErrorEnabled=false
+            binding.inputAnswer.isErrorEnabled = false
         }
     }
 

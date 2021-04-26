@@ -15,7 +15,8 @@ object SimpleFormUtils {
         sectionedForm.forEach { entry: Map.Entry<String, List<Form>> ->
             val titleForm = Form(
                 sectionTitle = entry.key,
-                formType = FormTypes.NONE
+                formType = FormTypes.NONE,
+                errorMessage = ""
             )
             titleForm.sectionMapperId = titleForm.id
             forms.add(titleForm)
@@ -59,8 +60,8 @@ object SimpleFormUtils {
             .matches()
     }
 
-    fun isValidPhoneNumber(countryCode: String, phoneNumber: String?): Boolean {
-        if (countryCode.isBlank()) {
+    fun isValidPhoneNumber(countryCode: String?, phoneNumber: String?): Boolean {
+        if (countryCode.isNullOrBlank()) {
             throw Exception("Please provide a valid country code, for example '+91")
         }
         if (phoneNumber.isNullOrBlank()) {

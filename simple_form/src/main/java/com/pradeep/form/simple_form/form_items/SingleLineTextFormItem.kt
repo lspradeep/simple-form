@@ -62,17 +62,17 @@ class SingleLineTextFormItem(
 
                 } else if (singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
                     if (isMandatory && input.isNullOrBlank()) {
-                        binding.inputAnswer.error = "Please provide a valid email address"
+                        binding.inputAnswer.error = errorMessage
                     } else if (isMandatory && !input.isNullOrBlank() && !input.toString()
                             .isEmailValid()
                     ) {
                         answer = input.toString()
-                        binding.inputAnswer.error = "Please provide a valid email address"
+                        binding.inputAnswer.error = errorMessage
                     } else if (!input.isNullOrBlank() && !input.toString()
                             .isEmailValid()
                     ) {
                         answer = input.toString()
-                        binding.inputAnswer.error = "Please provide a valid email address"
+                        binding.inputAnswer.error = errorMessage
                     } else {
                         answer = input.toString()
                         binding.inputAnswer.isErrorEnabled=false
@@ -93,13 +93,13 @@ class SingleLineTextFormItem(
                     }
                 } else if (singleLineTextType == SingleLineTextType.EMAIL_ADDRESS) {
                     if (isMandatory && answer.isNullOrBlank()) {
-                        binding.inputAnswer.error = "Please provide a valid email address"
+                        binding.inputAnswer.error = errorMessage
                     } else if (isMandatory && !answer.isNullOrBlank() && !answer.toString()
                             .isEmailValid()
                     ) {
-                        binding.inputAnswer.error = "Please provide a valid email address"
+                        binding.inputAnswer.error = errorMessage
                     } else if (!answer.isNullOrBlank() && !answer.toString().isEmailValid()) {
-                        binding.inputAnswer.error = "Please provide a valid email address"
+                        binding.inputAnswer.error = errorMessage
                     } else {
                         binding.inputAnswer.isErrorEnabled=false
                     }

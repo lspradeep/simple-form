@@ -12,8 +12,7 @@ import java.util.*
 
 @Parcelize
 data class Form(
-    val id: String = UUID.randomUUID().toString(),
-    val formType: Int = FormTypes.NONE,
+    val formType: Int = FormTypes.SINGLE_LINE_TEXT,
     val question: String? = null,
     val choices: List<String>? = null,
     val description: String? = null,
@@ -24,13 +23,15 @@ data class Form(
     var sectionTitle: String? = null,
     val singleLineTextType: SingleLineTextType = SingleLineTextType.TEXT,
     val numberInputType: NumberInputType = NumberInputType.NUMBER,
-    var countryCode: String = "+91",
+    var countryCode: String? = null,
     val charLimit: Int = -1,
-    val errorMessage: String = "Please provide an answer",
+    val errorMessage: String,
     var formValidationListener: String? = null,
     var sectionMapperId: String? = null
 ) : Parcelable {
+    val id: String = UUID.randomUUID().toString()
     var isValid = true
+
     init {
         check()
     }
@@ -47,6 +48,9 @@ data class Form(
         }
         if (formType == FormTypes.MULTI_CHOICE && choices?.size ?: 0 == 0) {
             throw Exception("you mush provide 'choices' for 'FormTypes.MULTI_CHOICE'")
+        }
+        if (formType == FormTypes.NUMBER && numberInputType == NumberInputType.PHONE_NUMBER && countryCode.isNullOrBlank()) {
+            throw Exception("please provide country code to 'FormTypes.NUMBER' that has 'numberInputType = NumberInputType.PHONE_NUMBER' ")
         }
     }
 
