@@ -16,13 +16,18 @@
 	        implementation 'com.github.lspradeep:simple-form:v1.0.0'
 	}
 ```
+## Table of content
+### 1. How to create a simple form
+### 2. How to create a sectioned form
+### 3. How to create a sectioned form and show only one section at a time
+<br/><br/><br/>
 
+
+# 1. How to create a simple form
 
 |               |               | 
 | ------------- | ------------- |
 | ![Alt Text](https://github.com/lspradeep/simple-form/blob/master/screenshots/simple1.png)  | ![Alt Text](https://github.com/lspradeep/simple-form/blob/master/screenshots/simple2.png)|
-
-# How to
 
 ### Step 1:
 ```
