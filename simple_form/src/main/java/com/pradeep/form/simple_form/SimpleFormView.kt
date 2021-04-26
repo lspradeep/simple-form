@@ -1,5 +1,6 @@
-package com.pradeep.form.simple_form.presentation
+package com.pradeep.form.simple_form
 
+import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -7,11 +8,11 @@ import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.pradeep.form.simple_form.R
-import com.pradeep.form.simple_form.SimpleFormAdapter
+import com.pradeep.form.simple_form.adapter.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ViewSimpleFormBinding
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
+import com.pradeep.form.simple_form.utils.FormSubmitCallback
 import timber.log.Timber
 import java.lang.Exception
 
@@ -48,10 +49,11 @@ class SimpleFormView @JvmOverloads constructor(
         true
     )
 
-    fun setData(forms: List<Form>, callback: FormSubmitCallback) {
+    fun setData(activity: Activity,forms: List<Form>, callback: FormSubmitCallback) {
         this.callback = callback
 
         simpleFormAdapter = SimpleFormAdapter(
+            activity=activity,
             forms = forms,
             sectionedForms = null,
             showOneSectionAtATime = false,
@@ -76,6 +78,7 @@ class SimpleFormView @JvmOverloads constructor(
     }
 
     fun setData(
+        activity: Activity,
         forms: Map<String, List<Form>>,
         callback: FormSubmitCallback,
         showOnSectionAtATime: Boolean = false
@@ -89,6 +92,7 @@ class SimpleFormView @JvmOverloads constructor(
         this.callback = callback
 
         simpleFormAdapter = SimpleFormAdapter(
+            activity=activity,
             sectionedForms = forms,
             forms = null,
             showOneSectionAtATime = showOneSectionAtOnce

@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.pradeep.form.simple_form.model.Form
-import com.pradeep.form.simple_form.presentation.FormSubmitCallback
+import com.pradeep.form.simple_form.utils.FormSubmitCallback
 import com.pradeep.form.simpleforms.databinding.ActivityMain2Binding
 
 class MainActivity2 : AppCompatActivity(), FormSubmitCallback {
@@ -26,6 +26,7 @@ class MainActivity2 : AppCompatActivity(), FormSubmitCallback {
         sectionedForms["Family"] = ConstructFormData.getSection3FormData()
 
         binding.simpleForm.setData(
+            this,
             sectionedForms, this, intent.getBooleanExtra(
                 ARGS_SHOW_ONE_SECTION_AT_A_TIME, false
             )

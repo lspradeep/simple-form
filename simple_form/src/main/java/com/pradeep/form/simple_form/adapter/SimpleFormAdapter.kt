@@ -1,15 +1,20 @@
-package com.pradeep.form.simple_form
+package com.pradeep.form.simple_form.adapter
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.pradeep.form.simple_form.utils.SimpleFormViewHolderProvider
 import com.pradeep.form.simple_form.form_items.BaseFormItem
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
 
 class SimpleFormAdapter(
+    val activity: Activity,
     forms: List<Form>? = null,
     val sectionedForms: Map<String, List<Form>>? = null,
     val showOneSectionAtATime: Boolean = false
@@ -44,6 +49,10 @@ class SimpleFormAdapter(
             currentSectionIndex = 0
             sectionedDataSet.addAll(getCurrentSectionData())
         }
+    }
+
+    fun getFragmentManager(): FragmentManager {
+        return (activity as FragmentActivity).supportFragmentManager
     }
 
     fun getCurrentSectionData(): List<Form> {

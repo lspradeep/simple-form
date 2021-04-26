@@ -8,7 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pradeep.form.simple_form.R
-import com.pradeep.form.simple_form.SimpleFormAdapter
+import com.pradeep.form.simple_form.adapter.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemSingleChoiceBinding
 import com.pradeep.form.simple_form.model.Form
 

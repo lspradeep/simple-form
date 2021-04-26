@@ -1,4 +1,4 @@
-package com.pradeep.form.simple_form.form_items
+package com.pradeep.form.simple_form.utils
 
 enum class SingleLineTextType {
     TEXT, EMAIL_ADDRESS

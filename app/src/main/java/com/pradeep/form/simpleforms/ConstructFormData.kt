@@ -1,13 +1,23 @@
 package com.pradeep.form.simpleforms
 
 import com.pradeep.form.simple_form.form_items.FormTypes
-import com.pradeep.form.simple_form.form_items.NumberInputType
-import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.model.Form
+import com.pradeep.form.simple_form.utils.NumberInputType
+import com.pradeep.form.simple_form.utils.SingleLineTextType
+import java.text.SimpleDateFormat
+import java.util.*
 
 object ConstructFormData {
     fun getFormData(): List<Form> {
         val forms = mutableListOf<Form>()
+        forms.add(
+            Form(
+                formType = FormTypes.DATE_PICKER,
+                question = "Date",
+                hint = "please pick a date",
+                errorMessage = "Please pick a date",
+            )
+        )
         forms.add(
             Form(
                 formType = FormTypes.SINGLE_LINE_TEXT,
@@ -72,6 +82,7 @@ object ConstructFormData {
                 question = "Phone number",
                 hint = "please provide your phone number",
                 numberInputType = NumberInputType.PHONE_NUMBER,
+                countryCode = "+91",
                 errorMessage = "Please provide a valid phone number"
             )
         )
@@ -88,6 +99,15 @@ object ConstructFormData {
                     "rick and morty"
                 ),
                 errorMessage = "Please choose an answer"
+            )
+        )
+        forms.add(
+            Form(
+                formType = FormTypes.DATE_PICKER,
+                question = "Date",
+                hint = "please pick a date",
+                errorMessage = "Please pick a date",
+                dateDisplayFormat = SimpleDateFormat("MMMM/dd/yyyy", Locale.getDefault())
             )
         )
         return forms

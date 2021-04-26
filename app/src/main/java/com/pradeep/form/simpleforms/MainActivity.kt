@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.pradeep.form.simple_form.model.Form
-import com.pradeep.form.simple_form.presentation.FormSubmitCallback
+import com.pradeep.form.simple_form.utils.FormSubmitCallback
 import com.pradeep.form.simpleforms.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), FormSubmitCallback {
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity(), FormSubmitCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.simpleForm.setData(ConstructFormData.getFormData(),this)
+        binding.simpleForm.setData(this,ConstructFormData.getFormData(),this)
     }
 
     override fun onFormSubmitted(forms: List<Form>) {

@@ -2,9 +2,10 @@ package com.pradeep.form.simple_form.form_items
 
 import android.text.InputType
 import androidx.core.widget.doAfterTextChanged
-import com.pradeep.form.simple_form.SimpleFormAdapter
+import com.pradeep.form.simple_form.adapter.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemNumberInputBinding
 import com.pradeep.form.simple_form.model.Form
+import com.pradeep.form.simple_form.utils.NumberInputType
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
 
 

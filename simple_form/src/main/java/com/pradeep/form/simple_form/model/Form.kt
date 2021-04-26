@@ -2,12 +2,13 @@ package com.pradeep.form.simple_form.model
 
 import android.os.Parcelable
 import com.pradeep.form.simple_form.form_items.FormTypes
-import com.pradeep.form.simple_form.form_items.NumberInputType
-import com.pradeep.form.simple_form.form_items.SingleLineTextType
+import com.pradeep.form.simple_form.utils.NumberInputType
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
 import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
+import com.pradeep.form.simple_form.utils.SingleLineTextType
 import kotlinx.android.parcel.Parcelize
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Parcelize
@@ -25,6 +26,7 @@ data class Form(
     val numberInputType: NumberInputType = NumberInputType.NUMBER,
     var countryCode: String? = null,
     val charLimit: Int = -1,
+    val dateDisplayFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyy", Locale.getDefault()),
     val errorMessage: String,
     var formValidationListener: String? = null,
     var sectionMapperId: String? = null
@@ -115,6 +117,10 @@ data class Form(
                 countryCode,
                 answer
             ))
+            return isValid
+        }
+        if (formType == FormTypes.DATE_PICKER) {
+            isValid = !(isMandatory && answer.isNullOrBlank())
             return isValid
         }
 

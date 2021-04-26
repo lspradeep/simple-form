@@ -6,9 +6,12 @@ import com.google.i18n.phonenumbers.Phonenumber
 import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber.CountryCodeSource
 import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 object SimpleFormUtils {
+    const val UTC_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 
     fun convertMapToList(sectionedForm: Map<String, List<Form>>): List<Form> {
         val forms = mutableListOf<Form>()

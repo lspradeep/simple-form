@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_16"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_common" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_answer"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_4">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_answer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="false"
+                android:drawableStart="@drawable/ic_baseline_date_range_24"
+                android:drawablePadding="@dimen/dimen_16"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:inputType="none"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+</layout>

@@ -1,8 +1,10 @@
-package com.pradeep.form.simple_form
+package com.pradeep.form.simple_form.utils
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.pradeep.form.simple_form.R
+import com.pradeep.form.simple_form.adapter.SimpleFormAdapter
 import com.pradeep.form.simple_form.form_items.*
 
 class SimpleFormViewHolderProvider {
@@ -88,6 +90,17 @@ class SimpleFormViewHolderProvider {
                         DataBindingUtil.inflate(
                             layoutInflater,
                             R.layout.item_number_input,
+                            parent,
+                            false
+                        ),
+                        simpleFormAdapter
+                    )
+                }
+                FormTypes.DATE_PICKER -> {
+                    return DatePickerFormItem(
+                        DataBindingUtil.inflate(
+                            layoutInflater,
+                            R.layout.item_date_picker,
                             parent,
                             false
                         ),

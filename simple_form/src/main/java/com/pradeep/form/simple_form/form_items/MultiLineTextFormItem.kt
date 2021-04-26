@@ -2,7 +2,7 @@ package com.pradeep.form.simple_form.form_items
 
 import android.text.InputFilter
 import androidx.core.widget.doAfterTextChanged
-import com.pradeep.form.simple_form.SimpleFormAdapter
+import com.pradeep.form.simple_form.adapter.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemMultiLineTextBinding
 import com.pradeep.form.simple_form.model.Form
 

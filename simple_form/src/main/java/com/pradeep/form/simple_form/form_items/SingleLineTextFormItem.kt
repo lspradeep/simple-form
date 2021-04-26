@@ -3,10 +3,11 @@ package com.pradeep.form.simple_form.form_items
 import android.text.InputFilter
 import android.text.InputType
 import androidx.core.widget.doAfterTextChanged
-import com.pradeep.form.simple_form.SimpleFormAdapter
+import com.pradeep.form.simple_form.adapter.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemSingleLineTextBinding
 import com.pradeep.form.simple_form.model.Form
 import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
+import com.pradeep.form.simple_form.utils.SingleLineTextType
 
 class SingleLineTextFormItem(
     private val binding: ItemSingleLineTextBinding,

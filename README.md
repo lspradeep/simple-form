@@ -37,7 +37,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.pradeep.form.simple_form.presentation.SimpleFormView
+    <com.pradeep.form.simple_form.SimpleFormView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -170,7 +170,7 @@ implement FormSubmitCallback in your activity and override the following functio
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.pradeep.form.simple_form.presentation.SimpleFormView
+    <com.pradeep.form.simple_form.SimpleFormView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -279,7 +279,7 @@ implement FormSubmitCallback in your activity and override the following functio
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 
-    <com.pradeep.form.simple_form.presentation.SimpleFormView
+    <com.pradeep.form.simple_form.SimpleFormView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:showOneSectionAtATime="true" />

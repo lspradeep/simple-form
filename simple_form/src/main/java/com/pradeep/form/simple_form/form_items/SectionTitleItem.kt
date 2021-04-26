@@ -1,6 +1,6 @@
 package com.pradeep.form.simple_form.form_items
 
-import com.pradeep.form.simple_form.SimpleFormAdapter
+import com.pradeep.form.simple_form.adapter.SimpleFormAdapter
 import com.pradeep.form.simple_form.databinding.ItemSectionTitleBinding
 import com.pradeep.form.simple_form.model.Form
 
