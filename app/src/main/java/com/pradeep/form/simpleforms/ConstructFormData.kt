@@ -4,6 +4,7 @@ import com.pradeep.form.simple_form.form_items.FormTypes
 import com.pradeep.form.simple_form.model.Form
 import com.pradeep.form.simple_form.utils.NumberInputType
 import com.pradeep.form.simple_form.utils.SingleLineTextType
+import com.pradeep.form.simple_form.utils.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -12,10 +13,12 @@ object ConstructFormData {
         val forms = mutableListOf<Form>()
         forms.add(
             Form(
-                formType = FormTypes.DATE_PICKER,
-                question = "Date",
-                hint = "please pick a date",
-                errorMessage = "Please pick a date",
+                formType = FormTypes.TIME_PICKER,
+                question = "Time",
+                hint = "please pick a time",
+                errorMessage = "Please pick a time",
+                timeFormat = TimeFormat.FORMAT_12_HOURS,
+                isMandatory = true
             )
         )
         forms.add(

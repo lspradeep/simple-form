@@ -107,6 +107,17 @@ class SimpleFormViewHolderProvider {
                         simpleFormAdapter
                     )
                 }
+                FormTypes.TIME_PICKER -> {
+                    return TimePickerFormItem(
+                        DataBindingUtil.inflate(
+                            layoutInflater,
+                            R.layout.item_time_picker,
+                            parent,
+                            false
+                        ),
+                        simpleFormAdapter
+                    )
+                }
                 else -> {
                     return SingleLineTextFormItem(
                         DataBindingUtil.inflate(

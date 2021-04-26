@@ -8,4 +8,5 @@ object FormTypes {
     const val SINGLE_CHOICE = 104
     const val MULTI_CHOICE = 105
     const val DATE_PICKER = 106
+    const val TIME_PICKER = 107
 }

@@ -6,6 +6,7 @@ import com.pradeep.form.simple_form.utils.NumberInputType
 import com.pradeep.form.simple_form.utils.SimpleFormUtils
 import com.pradeep.form.simple_form.utils.SimpleFormUtils.isEmailValid
 import com.pradeep.form.simple_form.utils.SingleLineTextType
+import com.pradeep.form.simple_form.utils.TimeFormat
 import kotlinx.android.parcel.Parcelize
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -27,6 +28,8 @@ data class Form(
     var countryCode: String? = null,
     val charLimit: Int = -1,
     val dateDisplayFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyy", Locale.getDefault()),
+    val timeDisplayFormat: SimpleDateFormat = SimpleDateFormat("hh:mm aaa", Locale.getDefault()),
+    val timeFormat: TimeFormat = TimeFormat.FORMAT_12_HOURS,
     val errorMessage: String,
     var formValidationListener: String? = null,
     var sectionMapperId: String? = null
@@ -120,6 +123,10 @@ data class Form(
             return isValid
         }
         if (formType == FormTypes.DATE_PICKER) {
+            isValid = !(isMandatory && answer.isNullOrBlank())
+            return isValid
+        }
+        if (formType == FormTypes.TIME_PICKER) {
             isValid = !(isMandatory && answer.isNullOrBlank())
             return isValid
         }
