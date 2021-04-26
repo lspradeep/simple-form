@@ -13,7 +13,7 @@
 ##### Add this in your project's build.gradle (app level)
 ```gradle
 	dependencies {
-	        implementation 'com.github.lspradeep:simple-form:v1.0.0'
+	        implementation 'com.github.lspradeep:simple-form:v1.0.1'
 	}
 ```
 ## Table of content
@@ -51,7 +51,7 @@ import com.pradeep.form.simple_form.form_items.NumberInputType
 import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.model.Form
 
-fun getFormData(): List<Form> {
+    fun getFormData(): List<Form> {
         val forms = mutableListOf<Form>()
         forms.add(
             Form(
@@ -59,6 +59,7 @@ fun getFormData(): List<Form> {
                 question = "Name",
                 hint = "please enter your name",
                 singleLineTextType = SingleLineTextType.TEXT,
+                errorMessage = "Please provide an answer"
             )
         )
         forms.add(
@@ -67,6 +68,7 @@ fun getFormData(): List<Form> {
                 question = "Email",
                 hint = "please enter your Email address",
                 singleLineTextType = SingleLineTextType.EMAIL_ADDRESS,
+                errorMessage = "Please provide a valid email address"
             )
         )
         forms.add(
@@ -75,6 +77,7 @@ fun getFormData(): List<Form> {
                 question = "Bio",
                 description = "tell us about you",
                 hint = "I'm from India. I love ice cream.",
+                errorMessage = "Please provide an answer"
             )
         )
         forms.add(
@@ -87,6 +90,49 @@ fun getFormData(): List<Form> {
                     "Female",
                     "Others"
                 ),
+                errorMessage = "Please select an answer"
+            )
+        )
+
+        forms.add(
+            Form(
+                formType = FormTypes.NUMBER,
+                question = "Do you earn or still studying",
+                description = "if yes, care to tell us how much you earn per year?",
+                numberInputType = NumberInputType.NUMBER,
+                errorMessage = "Please provide an answer"
+            )
+        )
+        forms.add(
+            Form(
+                formType = FormTypes.NUMBER,
+                question = "What's  your score in college",
+                numberInputType = NumberInputType.DECIMAL_NUMBER,
+                errorMessage = "Please provide an answer"
+            )
+        )
+        forms.add(
+            Form(
+                formType = FormTypes.NUMBER,
+                question = "Phone number",
+                hint = "please provide your phone number",
+                numberInputType = NumberInputType.PHONE_NUMBER,
+                errorMessage = "Please provide a valid phone number"
+            )
+        )
+        forms.add(
+            Form(
+                formType = FormTypes.MULTI_CHOICE,
+                question = "Your favourite TV shows",
+                description = "you can pick more than one",
+                hint = "hint 3",
+                choices = listOf(
+                    "friends",
+                    "tom and jerry",
+                    "pokemon",
+                    "rick and morty"
+                ),
+                errorMessage = "Please choose an answer"
             )
         )
         return forms
@@ -139,13 +185,14 @@ import com.pradeep.form.simple_form.form_items.SingleLineTextType
 import com.pradeep.form.simple_form.model.Form
 
 fun getSection1FormData(): List<Form> {
-        val forms = mutableListOf<Form>()
-        forms.add(
+      val forms = mutableListOf<Form>()
+      forms.add(
             Form(
                 formType = FormTypes.SINGLE_LINE_TEXT,
                 question = "Name",
                 hint = "please enter your name",
                 singleLineTextType = SingleLineTextType.TEXT,
+                errorMessage = "Please provide an answer"
             )
         )
         forms.add(
@@ -154,6 +201,16 @@ fun getSection1FormData(): List<Form> {
                 question = "Email",
                 hint = "please enter your Email address",
                 singleLineTextType = SingleLineTextType.EMAIL_ADDRESS,
+                errorMessage = "Please provide a valid email address"
+            )
+        )
+	forms.add(
+            Form(
+                formType = FormTypes.NUMBER,
+                question = "Phone number",
+                hint = "please provide your phone number",
+                numberInputType = NumberInputType.PHONE_NUMBER,
+                errorMessage = "Please provide a valid phone number"
             )
         )
         return forms
@@ -161,24 +218,22 @@ fun getSection1FormData(): List<Form> {
 
     fun getSection2FormData(): List<Form> {
         val forms = mutableListOf<Form>()
-     forms.add(
+        forms.add(
             Form(
-                formType = FormTypes.MULTI_LINE_TEXT,
-                question = "Bio",
-                description = "tell us about you",
-                hint = "I'm from India. I love ice cream.",
+                formType = FormTypes.SINGLE_LINE_TEXT,
+                question = "College Name",
+                hint = "please enter your name",
+                singleLineTextType = SingleLineTextType.TEXT,
+                errorMessage = "Please provide an answer"
             )
         )
         forms.add(
             Form(
-                formType = FormTypes.SINGLE_CHOICE,
-                question = "Gender",
-                hint = "please choose your gender",
-                choices = listOf(
-                    "Male",
-                    "Female",
-                    "Others"
-                ),
+                formType = FormTypes.NUMBER,
+                question = "Your score in college",
+                hint = "example: 7.6",
+                numberInputType = NumberInputType.NUMBER,
+                errorMessage = "Please provide an answer"
             )
         )
         return forms
