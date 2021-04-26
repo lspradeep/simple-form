@@ -202,3 +202,31 @@ implement FormSubmitCallback in your activity and override the following functio
          //do something with the result
     }
 ```
+<br/><br/><br/>
+# 3. How to create a sectioned form and show only one section at a time
+
+*note: user can go to next section only after filling all the mandatory fields in the current section*
+
+
+|               |               |               | 
+| ------------- | ------------- | ------------- |
+| ![Alt Text](https://github.com/lspradeep/simple-form/blob/master/screenshots/show_one_section1.png)  | ![Alt Text](https://github.com/lspradeep/simple-form/blob/master/screenshots/show_one_section2.png)|![Alt Text](https://github.com/lspradeep/simple-form/blob/master/screenshots/show_one_section3.png)|
+
+### Step 1:
+   #### Create a sectioned form using the 4 steps shown in previous section
+
+### Step 2:
+   #### after creating a sectioned form, to show one section at a time to user, you can do the following
+   ```kotlin
+   binding.simpleForm.setData(sectionedForms, callback = this, showOnSectionAtATime = true)
+   ```
+   ### OR
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+
+    <com.pradeep.form.simple_form.presentation.SimpleFormView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:showOneSectionAtATime="true" />
+
+```
