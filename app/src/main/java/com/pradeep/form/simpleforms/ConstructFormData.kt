@@ -17,7 +17,17 @@ object ConstructFormData {
                 question = "Time",
                 hint = "please pick a time",
                 errorMessage = "Please pick a time",
-                timeFormat = TimeFormat.FORMAT_12_HOURS,
+                timeFormat = TimeFormat.FORMAT_24_HOURS,
+                isMandatory = true
+            )
+        )
+        forms.add(
+            Form(
+                formType = FormTypes.DATE_PICKER,
+                question = "Time",
+                hint = "please pick a time",
+                errorMessage = "Please pick a time",
+                timeFormat = TimeFormat.FORMAT_24_HOURS,
                 isMandatory = true
             )
         )

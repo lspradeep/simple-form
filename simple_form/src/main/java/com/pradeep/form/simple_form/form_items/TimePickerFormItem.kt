@@ -42,21 +42,17 @@ class TimePickerFormItem constructor(
         }
 
         binding.editAnswer.setOnClickListener {
-            val timeFormatter: SimpleDateFormat
+            val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
             val picker = MaterialTimePicker.Builder()
             if (form.timeFormat == TimeFormat.FORMAT_24_HOURS) {
-                timeFormatter = SimpleDateFormat("HH:mm aaa", Locale.getDefault())
                 picker.setTimeFormat(com.google.android.material.timepicker.TimeFormat.CLOCK_24H)
             } else {
-                timeFormatter = SimpleDateFormat("hh:mm aaa", Locale.getDefault())
                 picker.setTimeFormat(com.google.android.material.timepicker.TimeFormat.CLOCK_12H)
             }
             val dialog = picker.build()
-
             dialog.show(adapter.getFragmentManager(), null)
             dialog.addOnPositiveButtonClickListener {
-                val cal=Calendar.getInstance()
-                val hourOfTheDay = cal.get(Calendar.HOUR_OF_DAY)
+                val hourOfTheDay = dialog.hour
                 val am_pm = when {
                     hourOfTheDay == 0 -> {
                         "AM"
