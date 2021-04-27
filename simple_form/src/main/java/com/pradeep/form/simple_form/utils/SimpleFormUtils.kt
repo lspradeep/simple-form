@@ -17,10 +17,11 @@ object SimpleFormUtils {
         val forms = mutableListOf<Form>()
         sectionedForm.forEach { entry: Map.Entry<String, List<Form>> ->
             val titleForm = Form(
-                sectionTitle = entry.key,
                 formType = FormTypes.NONE,
                 errorMessage = ""
-            )
+            ).apply {
+                setSectionTitle(entry.key)
+            }
             titleForm.sectionMapperId = titleForm.id
             forms.add(titleForm)
 

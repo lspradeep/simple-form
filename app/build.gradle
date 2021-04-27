@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android.extensions'
 }
 
 android {
@@ -32,6 +33,9 @@ android {
     }
     buildFeatures {
         dataBinding true
+    }
+    androidExtensions {
+        experimental = true
     }
 }
 

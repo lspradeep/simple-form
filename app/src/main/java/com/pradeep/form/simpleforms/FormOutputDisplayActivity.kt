@@ -21,12 +21,12 @@ class FormOutputDisplayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_form_output_display)
         val stringBuilder = StringBuilder()
-        intent.getParcelableArrayListExtra<Form>(ARGS_FORMS)?.let { forms ->
+        intent.getParcelableArrayListExtra<FormOutput>(ARGS_FORMS)?.let { forms ->
             forms.forEach {
                 if (it.formType == FormTypes.NONE) {
                     stringBuilder.append("\n")
                     stringBuilder.append("\n")
-                    stringBuilder.append(it.sectionTitle)
+                    //stringBuilder.append(it.sectionTitle)
                     stringBuilder.append("\n")
                     stringBuilder.append("\n")
                 } else if (it.formType == FormTypes.MULTI_CHOICE) {
@@ -55,7 +55,7 @@ class FormOutputDisplayActivity : AppCompatActivity() {
 
     companion object {
         private const val ARGS_FORMS = "FORMS"
-        fun newIntent(context: Context, forms: List<Form>): Intent {
+        fun newIntent(context: Context, forms: List<FormOutput>): Intent {
             val intent = Intent(context, FormOutputDisplayActivity::class.java)
             intent.putParcelableArrayListExtra(ARGS_FORMS, forms as ArrayList<out Parcelable>)
             return intent

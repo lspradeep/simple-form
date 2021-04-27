@@ -34,8 +34,11 @@ class MainActivity2 : AppCompatActivity(), FormSubmitCallback {
     }
 
     override fun onFormSubmitted(forms: List<Form>) {
-        startActivity(FormOutputDisplayActivity.newIntent(this, forms))
-        binding.simpleForm.getSectionIdTitlePairs()
+        val formOutput = mutableListOf<FormOutput>()
+        forms.forEach {
+            formOutput.add(FormOutput(it.question, it.answer, it.answers, it.formType))
+        }
+        startActivity(FormOutputDisplayActivity.newIntent(this, formOutput))
     }
 
     companion object {

@@ -13,10 +13,14 @@ class MainActivity : AppCompatActivity(), FormSubmitCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.simpleForm.setData(this,ConstructFormData.getFormData(),this)
+        binding.simpleForm.setData(this, ConstructFormData.getFormData(), this)
     }
 
     override fun onFormSubmitted(forms: List<Form>) {
-        startActivity(FormOutputDisplayActivity.newIntent(this, forms))
+        val formOutput = mutableListOf<FormOutput>()
+        forms.forEach {
+            formOutput.add(FormOutput(it.question, it.answer, it.answers, it.formType))
+        }
+        startActivity(FormOutputDisplayActivity.newIntent(this, formOutput))
     }
 }

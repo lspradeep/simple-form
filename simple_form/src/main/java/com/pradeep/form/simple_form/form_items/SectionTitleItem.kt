@@ -9,7 +9,7 @@ class SectionTitleItem(
     private val adapter: SimpleFormAdapter
 ) : BaseFormItem(binding.root,adapter) {
     override fun bind(form: Form) {
-        binding.textTitle.text = form.sectionTitle
+        binding.textTitle.text = form.getSectionTitle()
     }
 
      fun validateForm(form:Form) {

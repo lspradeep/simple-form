@@ -12,7 +12,6 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-@Parcelize
 data class Form(
     val formType: Int = FormTypes.SINGLE_LINE_TEXT,
     val question: String? = null,
@@ -22,7 +21,6 @@ data class Form(
     var answer: String? = null,
     var answers: List<String>? = null,
     val isMandatory: Boolean = false,
-    var sectionTitle: String? = null,
     val singleLineTextType: SingleLineTextType = SingleLineTextType.TEXT,
     val numberInputType: NumberInputType = NumberInputType.NUMBER,
     var countryCode: String? = null,
@@ -30,23 +28,30 @@ data class Form(
     val dateDisplayFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyy", Locale.getDefault()),
     val timeDisplayFormat: SimpleDateFormat = SimpleDateFormat("hh:mm aaa", Locale.getDefault()),
     val timeFormat: TimeFormat = TimeFormat.FORMAT_12_HOURS,
-    val errorMessage: String,
-    var formValidationListener: String? = null,
-    var sectionMapperId: String? = null
-) : Parcelable {
+    val errorMessage: String
+)  {
     val id: String = UUID.randomUUID().toString()
-    var isValid = true
+    var otherData: Any? = null
+    var otherDatas: List<Any>? = null
+    internal var sectionMapperId: String? = null
+    internal var isValid = true
+    private var sectionTitle: String? = null
 
     init {
         check()
     }
 
+    internal fun setSectionTitle(sectionTitle: String) {
+        this.sectionTitle = sectionTitle
+    }
+
+    fun getSectionTitle(): String? {
+        return sectionTitle
+    }
+
     private fun check() {
         if (charLimit == 0) {
             throw Exception("'charLimit': use -1 for no limit or use value greater than 0")
-        }
-        if (formType == FormTypes.NONE && sectionTitle.isNullOrBlank()) {
-            throw Exception("'FormTypes.NONE' is used internally for creating section titles, when you set 'Map<String, List<Form>>' to 'SimpleFormView'")
         }
         if (formType == FormTypes.SINGLE_CHOICE && choices?.size ?: 0 == 0) {
             throw Exception("you mush provide 'choices' for 'FormTypes.SINGLE_CHOICE'")

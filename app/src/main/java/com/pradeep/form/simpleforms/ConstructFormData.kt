@@ -18,7 +18,6 @@ object ConstructFormData {
                 hint = "please pick a time",
                 errorMessage = "Please pick a time",
                 timeFormat = TimeFormat.FORMAT_24_HOURS,
-                isMandatory = true
             )
         )
         forms.add(
@@ -28,7 +27,6 @@ object ConstructFormData {
                 hint = "please pick a time",
                 errorMessage = "Please pick a time",
                 timeFormat = TimeFormat.FORMAT_24_HOURS,
-                isMandatory = true
             )
         )
         forms.add(

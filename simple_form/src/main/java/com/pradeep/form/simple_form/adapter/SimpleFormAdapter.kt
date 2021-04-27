@@ -36,8 +36,8 @@ class SimpleFormAdapter(
                 isSectionedForm = true
                 dataSet.addAll(SimpleFormUtils.convertMapToList(it))
                 dataSet.forEach { form ->
-                    if (form.formType == FormTypes.NONE && !form.sectionTitle.isNullOrBlank()) {
-                        sectionTitleIdPairs.add(Pair(form.id, form.sectionTitle!!))
+                    if (form.formType == FormTypes.NONE && !form.getSectionTitle().isNullOrBlank()) {
+                        sectionTitleIdPairs.add(Pair(form.id, form.getSectionTitle()!!))
                     }
                 }
 
